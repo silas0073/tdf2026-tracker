@@ -322,11 +322,26 @@
     color: var(--chalk-dim);
   }
   .map-legend span{ display: inline-flex; align-items: center; gap: 6px; }
-  .map-legend i{ width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+  .map-legend i{
+    width: 20px; height: 20px; border-radius: 50%;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 11px; font-style: normal;
+  }
   .leaflet-popup-content-wrapper{ background: var(--asphalt-2); color: var(--chalk); border-radius: var(--radius); }
   .leaflet-popup-tip{ background: var(--asphalt-2); }
   .leaflet-popup-content b{ color: var(--maillot-jaune); }
   .leaflet-container{ font-family: inherit; }
+
+  .stage-icon-marker{
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px;
+    border: 2px solid var(--asphalt);
+    box-shadow: 0 0 0 1px rgba(0,0,0,0.4);
+    cursor: pointer;
+  }
+  .stage-icon-marker.gd{ width: 30px; height: 30px; font-size: 15px; }
 
   .version-badge{
     font-size: 11px;
@@ -470,11 +485,11 @@
   <!-- MAP PANEL -->
   <section class="panel" id="panel-map">
     <div class="map-legend">
-      <span><i style="background:var(--white-jersey)"></i>Flat</span>
-      <span><i style="background:var(--maillot-jaune)"></i>Hilly</span>
-      <span><i style="background:var(--kom-red)"></i>Mountain</span>
-      <span><i style="background:var(--sprint-green)"></i>Time trial</span>
-      <span><i style="background:transparent;border:1px solid var(--chalk-dim)"></i>Rest day city</span>
+      <span><i style="background:var(--white-jersey)">🏁</i>Flat</span>
+      <span><i style="background:var(--maillot-jaune)">⛰</i>Hilly</span>
+      <span><i style="background:var(--kom-red)">🗻</i>Mountain</span>
+      <span><i style="background:var(--sprint-green)">⏱</i>Time trial</span>
+      <span><i style="background:#1c1a17;border:2px solid var(--maillot-jaune)">🚩</i>Grand Départ</span>
     </div>
     <div id="map"></div>
     <p class="meta-note" style="margin-top:14px;">Straight-line route between stage towns, for orientation only — not the actual road course. Click any marker to jump to that stage's details.</p>
@@ -488,7 +503,7 @@
 </main>
 
 <footer>
-  <p class="version-badge">tdf2026-tracker v1.6.0</p>
+  <p class="version-badge">tdf2026-tracker v1.7.0</p>
   Route and results reflect reporting on the official 2026 Tour de France as of 6 July 2026. The race is in progress — treat all results and standings as a snapshot from the finish of Stage 2, and check official ASO or broadcaster sources for live updates on Stage 3 onward.
 </footer>
 
@@ -656,7 +671,7 @@ const typeMeta = {
   mountain: {label:"Mountain", tag:"tag-mountain"},
 };
 
-const APP_VERSION = "1.6.0";
+const APP_VERSION = "1.7.0";
 
 // Approximate town-centre coordinates for the map view (schematic, not official race GPX)
 const townCoords = {
@@ -861,8 +876,9 @@ function renderMap(){
   }).addTo(leafletMap);
 
   const typeColor = { flat:'#e9e4d6', hilly:'#e8b923', mountain:'#c1442d', tt:'#3f7d58' };
+  const typeIcon = { flat:'🏁', hilly:'⛰', mountain:'🗻', tt:'⏱' };
+  const typeIconColor = { flat:'#1c1a17', hilly:'#1c1a17', mountain:'#f1e8d6', tt:'#f1e8d6' };
   const latlngs = [];
-  const seenTowns = new Set();
 
   stages.forEach(s => {
     if(s.rest) return;
@@ -872,25 +888,33 @@ function renderMap(){
     if(toC) latlngs.push(toC);
 
     if(toC){
-      const key = `${s.n}-${s.to}`;
       const color = typeColor[s.type] || '#e9e4d6';
-      const marker = L.circleMarker(toC, {
-        radius: 7, color: color, weight: 2, fillColor: color, fillOpacity: 0.85
-      }).addTo(leafletMap);
+      const glyph = typeIcon[s.type] || '🏁';
+      const icon = L.divIcon({
+        className: '',
+        html: `<div class="stage-icon-marker" style="background:${color};color:${typeIconColor[s.type]||'#1c1a17'};">${glyph}</div>`,
+        iconSize: [26,26],
+        iconAnchor: [13,13]
+      });
+      const marker = L.marker(toC, { icon }).addTo(leafletMap);
       const aest = s.start ? toAEST(s.start) : null;
       marker.bindTooltip(`
         <b>Stage ${s.n}</b> · ${s.from} → ${s.to}<br>
         ${s.km} km${aest ? ` · ${aest.label} AEST` : ''}${s.winner ? `<br>🏆 ${s.winner}` : ''}
         <br><span style="color:#e8b923">Click to view stage →</span>
-      `, { sticky: true, direction: 'top', offset: [0,-8] });
+      `, { sticky: true, direction: 'top', offset: [0,-14] });
       marker.on('click', () => goToStage(s.n));
-      marker.getElement && (marker.getElement().style.cursor = 'pointer');
     }
-    // Mark stage-1 start town distinctly (Grand Départ) and Paris finish
+    // Mark stage-1 start town distinctly (Grand Départ)
     if(s.n === 1 && fromC){
-      const gd = L.circleMarker(fromC, { radius: 8, color: '#e8b923', weight: 3, fillColor: '#1c1a17', fillOpacity: 0.6 })
-        .addTo(leafletMap);
-      gd.bindTooltip('<b>Grand Départ</b><br>Barcelona<br><span style="color:#e8b923">Click to view stage →</span>', { sticky: true });
+      const gdIcon = L.divIcon({
+        className: '',
+        html: `<div class="stage-icon-marker gd" style="background:#1c1a17;border-color:#e8b923;color:#e8b923;">🚩</div>`,
+        iconSize: [30,30],
+        iconAnchor: [15,15]
+      });
+      const gd = L.marker(fromC, { icon: gdIcon }).addTo(leafletMap);
+      gd.bindTooltip('<b>Grand Départ</b><br>Barcelona<br><span style="color:#e8b923">Click to view stage →</span>', { sticky: true, direction: 'top', offset: [0,-16] });
       gd.on('click', () => goToStage(1));
     }
   });
