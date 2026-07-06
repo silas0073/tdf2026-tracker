@@ -398,34 +398,35 @@
   <h1 class="display">Tour de <span>France</span> 2026</h1>
   <p class="subline">21 stages, 3,321 kilometres and 54,450m of climbing across Spain and France, 4–26 July. Two rest days. Two finishes on Alpe d'Huez.</p>
 
-  <div class="live-banner">
+  <div class="live-banner" id="live-banner">
     <span class="live-dot"></span>
-    Stage 3 (Granollers → Les Angles) is racing today. Results below run through Stage 2 — check official sources for live splits.
+    <span id="live-banner-text">Stage 4 (Carcassonne → Foix) is next. Checking Wikipedia for the latest results…</span>
+    <button id="wiki-refresh-btn" style="margin-left:auto;background:transparent;border:1px solid rgba(193,68,45,0.4);color:#e8b0a2;border-radius:999px;padding:3px 10px;font-size:11px;cursor:pointer;white-space:nowrap;">↻ Refresh</button>
   </div>
 
   <div class="jersey-strip">
     <div class="jersey-card yellow">
       <div class="jersey-label">Yellow · General Classification</div>
-      <div class="jersey-name">Jonas Vingegaard</div>
-      <div class="jersey-team">Visma-Lease a Bike</div>
+      <div class="jersey-name" id="jersey-yellow-name">Tadej Pogačar</div>
+      <div class="jersey-team" id="jersey-yellow-team">UAE Team Emirates-XRG</div>
     </div>
     <div class="jersey-card green">
       <div class="jersey-label">Green · Points</div>
-      <div class="jersey-name">Isaac Del Toro</div>
-      <div class="jersey-team">UAE Team Emirates-XRG</div>
+      <div class="jersey-name" id="jersey-green-name">Jonas Vingegaard</div>
+      <div class="jersey-team" id="jersey-green-team">Visma-Lease a Bike</div>
     </div>
     <div class="jersey-card polka">
       <div class="jersey-label">Polka Dot · Mountains</div>
-      <div class="jersey-name">Alex Molenaar</div>
-      <div class="jersey-team">Caja Rural-Seguros RGA</div>
+      <div class="jersey-name" id="jersey-polka-name">Alex Baudin</div>
+      <div class="jersey-team" id="jersey-polka-team">EF Education-EasyPost</div>
     </div>
     <div class="jersey-card white">
       <div class="jersey-label">White · Best Young Rider</div>
-      <div class="jersey-name">Isaac Del Toro</div>
-      <div class="jersey-team">UAE Team Emirates-XRG</div>
+      <div class="jersey-name" id="jersey-white-name">Isaac Del Toro</div>
+      <div class="jersey-team" id="jersey-white-team">UAE Team Emirates-XRG</div>
     </div>
   </div>
-  <p class="meta-note">Standings shown as of the finish of Stage 2 (Barcelona, 5 July). The Tour is live — this is a snapshot, not a live feed.</p>
+  <p class="meta-note" id="snapshot-note">Standings shown as of the finish of Stage 3 (Les Angles, 6 July). Auto-checks Wikipedia every few minutes for newer results — see the banner above for when it last found something new.</p>
 </header>
 
 <main>
@@ -453,7 +454,7 @@
 
     <div class="class-section">
       <h2><span class="dot" style="background:var(--maillot-jaune)"></span>General Classification</h2>
-      <p class="as-of">After Stage 2 · Barcelona</p>
+      <p class="as-of">After Stage 3 · Les Angles</p>
       <table class="gc">
         <thead><tr><th class="pos">Pos</th><th>Rider</th><th>Team</th><th class="gap">Gap</th></tr></thead>
         <tbody id="gc-body"></tbody>
@@ -462,26 +463,26 @@
 
     <div class="class-section">
       <h2><span class="dot" style="background:var(--sprint-green)"></span>Points Classification — Green Jersey</h2>
-      <p class="as-of">After Stage 2</p>
-      <div class="leader-note"><b>Isaac Del Toro</b> (UAE Team Emirates-XRG) leads on 30 points after winning Stage 2 in Barcelona, just ahead of teammate <b>Tadej Pogačar</b> and breakaway rider <b>Alex Molenaar</b>, who topped the intermediate sprint. Sprinters Jasper Philipsen, Olav Kooij and Biniam Girmay are expected to contest the classification once the flat stages arrive later in week one.</div>
+      <p class="as-of">After Stage 3</p>
+      <div class="leader-note"><b>Tadej Pogačar</b> (UAE Team Emirates-XRG) actually leads on points with 55 after his Stage 3 win, but since he already wears yellow, the green jersey passes to <b>Jonas Vingegaard</b> (44 points), with <b>Isaac Del Toro</b> third on 39 and <b>Mads Pedersen</b> fourth on 37 after strong breakaway sprint points.</div>
     </div>
 
     <div class="class-section">
       <h2><span class="dot" style="background:var(--kom-red)"></span>Mountains Classification — Polka Dot Jersey</h2>
-      <p class="as-of">After Stage 2</p>
-      <div class="leader-note"><b>Alex Molenaar</b> (Caja Rural-Seguros RGA) took the lead after scoring on the Côte de Begues in the Stage 2 breakaway. <b>Tadej Pogačar</b> held the jersey after Stage 1 by topping the Montjuïc climb, and is expected to challenge again once the race reaches the Pyrenees on Stage 3.</div>
+      <p class="as-of">After Stage 3</p>
+      <div class="leader-note"><b>Alex Baudin</b> (EF Education-EasyPost) took over with 12 points from a long day in the Stage 3 breakaway, topping both the Col de Toses and Col du Calvaire. <b>Alex Molenaar</b>, who'd held the jersey after Stage 2, dropped to fourth on 5 points.</div>
     </div>
 
     <div class="class-section">
       <h2><span class="dot" style="background:var(--white-jersey)"></span>Best Young Rider — White Jersey</h2>
-      <p class="as-of">After Stage 2</p>
-      <div class="leader-note"><b>Isaac Del Toro</b> (UAE Team Emirates-XRG, born 2003) leads as the highest-placed rider under the age classification's cutoff, sitting 4th overall. <b>Juan Ayuso</b> (Lidl-Trek) and 19-year-old <b>Paul Seixas</b> (Decathlon CMA CGM) are the closest challengers.</div>
+      <p class="as-of">After Stage 3</p>
+      <div class="leader-note"><b>Isaac Del Toro</b> (UAE Team Emirates-XRG, born 2003) continues to lead, sitting 4th overall at 24 seconds. <b>Juan Ayuso</b> (Lidl-Trek) is close behind in second, just 3 seconds back, with <b>Paul Seixas</b> (Decathlon CMA CGM, age 19) third.</div>
     </div>
 
     <div class="class-section">
       <h2><span class="dot" style="background:var(--chalk-dim)"></span>Team Classification</h2>
-      <p class="as-of">After Stage 2</p>
-      <div class="leader-note"><b>UAE Team Emirates-XRG</b> lead after a dominant Barcelona weekend: a stage win, second place on the same stage, and two riders inside the overall top four.</div>
+      <p class="as-of">After Stage 3</p>
+      <div class="leader-note"><b>UAE Team Emirates-XRG</b> lead in 26:25:34, ahead of Red Bull-Bora-hansgrohe (+2:12) and Lidl-Trek (+6:24).</div>
     </div>
 
   </section>
@@ -501,14 +502,14 @@
 
   <!-- TEAMS PANEL -->
   <section class="panel" id="panel-teams">
-    <div class="leader-note" style="margin-bottom:20px;"><b>UAE Team Emirates-XRG</b> lead the team classification after Stage 2 — a stage win, second place on the same day, and two riders in the overall top four.</div>
+    <div class="leader-note" style="margin-bottom:20px;"><b>UAE Team Emirates-XRG</b> lead the team classification after Stage 3, ahead of Red Bull-Bora-hansgrohe and Lidl-Trek.</div>
     <div class="team-grid" id="team-grid"></div>
   </section>
 </main>
 
 <footer>
-  <p class="version-badge">tdf2026-tracker v1.8.0</p>
-  Route and results reflect reporting on the official 2026 Tour de France as of 6 July 2026. The race is in progress — treat all results and standings as a snapshot from the finish of Stage 2, and check official ASO or broadcaster sources for live updates on Stage 3 onward.
+  <p class="version-badge">tdf2026-tracker v1.9.0</p>
+  Route and results reflect reporting on the official 2026 Tour de France as of Stage 3 (6 July 2026). The site auto-checks Wikipedia's 2026 Tour de France article every few minutes for newer stage winners and jersey holders — see the banner at the top for the last check time. If a check fails or Wikipedia hasn't been updated yet, the last saved results stay in place.
 </footer>
 
 <script>
@@ -541,8 +542,18 @@ const stages = [
     ],
     jerseys:{yellow:"Jonas Vingegaard", green:"Isaac Del Toro", polka:"Alex Molenaar", white:"Isaac Del Toro"}
   },
-  {n:3, date:"Mon 6 Jul", from:"Granollers", to:"Les Angles", km:195.9, type:"mountain", status:"live", start:"12:15",
-    note:"The Tour crosses into France and the Pyrenees on the same day, tackling the Col de Toses before a summit finish at the Les Angles ski resort. Nearly 3,900m of climbing. Racing today — result not yet final."},
+  {n:3, date:"Mon 6 Jul", from:"Granollers", to:"Les Angles", km:195.9, type:"mountain", status:"done", start:"12:15",
+    note:"The Tour crosses into France and the Pyrenees on the same day, tackling the Col de Toses before a summit finish at the Les Angles ski resort. Nearly 3,900m of climbing.",
+    winner:"Tadej Pogačar (UAE Team Emirates-XRG)",
+    results:[
+      ["1","Tadej Pogačar","4:45:11"],
+      ["2","Jonas Vingegaard","+0:02"],
+      ["3","Richard Carapaz","s.t."],
+      ["4","Paul Seixas","s.t."],
+      ["5","Tobias Halland Johannessen","+0:04"],
+    ],
+    jerseys:{yellow:"Tadej Pogačar", green:"Jonas Vingegaard", polka:"Alex Baudin", white:"Isaac Del Toro"}
+  },
   {n:4, date:"Tue 7 Jul", from:"Carcassonne", to:"Foix", km:181.9, type:"hilly", start:"13:05",
     note:"Rolling terrain between two fortified Tour towns — Carcassonne's citadel to Foix beneath its castle. No classified summits, but enough undulation to keep sprinters' teams honest."},
   {n:5, date:"Wed 8 Jul", from:"Lannemezan", to:"Pau", km:158.3, type:"flat", start:"13:05",
@@ -584,16 +595,16 @@ const stages = [
 ];
 
 const gcStandings = [
-  {pos:1, name:"Jonas Vingegaard", team:"Visma-Lease a Bike", gap:"04:01:48", leader:true},
-  {pos:2, name:"Tadej Pogačar", team:"UAE Team Emirates-XRG", gap:"+0:06"},
-  {pos:3, name:"Remco Evenepoel", team:"Red Bull-Bora-Hansgrohe", gap:"+0:15"},
-  {pos:4, name:"Isaac Del Toro", team:"UAE Team Emirates-XRG", gap:"+0:16"},
-  {pos:5, name:"Juan Ayuso", team:"Lidl-Trek", gap:"+0:19"},
-  {pos:6, name:"Paul Seixas", team:"Decathlon CMA CGM", gap:"+0:42"},
-  {pos:7, name:"Romain Grégoire", team:"Groupama-FDJ United", gap:"+0:44"},
-  {pos:8, name:"Florian Lipowitz", team:"Red Bull-Bora-Hansgrohe", gap:"+0:45"},
-  {pos:9, name:"Lenny Martinez", team:"Bahrain Victorious", gap:"+0:53"},
-  {pos:10, name:"Tom Pidcock", team:"Pinarello-Q36.5", gap:"+1:00"},
+  {pos:1, name:"Tadej Pogačar", team:"UAE Team Emirates-XRG", gap:"08:46:55", leader:true},
+  {pos:2, name:"Jonas Vingegaard", team:"Visma-Lease a Bike", gap:"s.t."},
+  {pos:3, name:"Remco Evenepoel", team:"Red Bull-Bora-Hansgrohe", gap:"+0:23"},
+  {pos:4, name:"Isaac Del Toro", team:"UAE Team Emirates-XRG", gap:"+0:24"},
+  {pos:5, name:"Juan Ayuso", team:"Lidl-Trek", gap:"+0:27"},
+  {pos:6, name:"Paul Seixas", team:"Decathlon CMA CGM", gap:"+0:48"},
+  {pos:7, name:"Florian Lipowitz", team:"Red Bull-Bora-Hansgrohe", gap:"+0:53"},
+  {pos:8, name:"Tobias Halland Johannessen", team:"Uno-X Mobility", gap:"+1:09"},
+  {pos:9, name:"Lenny Martinez", team:"Bahrain Victorious", gap:"+1:11"},
+  {pos:10, name:"Ilan Van Wilder", team:"Soudal Quick-Step", gap:"+1:17"},
 ];
 
 const teams = [
@@ -675,7 +686,7 @@ const typeMeta = {
   mountain: {label:"Mountain", tag:"tag-mountain"},
 };
 
-const APP_VERSION = "1.8.0";
+const APP_VERSION = "1.9.0";
 
 // Approximate town-centre coordinates for the map view (schematic, not official race GPX)
 const townCoords = {
@@ -947,6 +958,94 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
 renderStages('all');
 renderGC();
 renderTeams();
+
+async function checkWikipediaUpdates(manual){
+  const banner = document.getElementById('live-banner-text');
+  const btn = document.getElementById('wiki-refresh-btn');
+  if(btn) btn.disabled = true;
+  if(banner && manual) banner.textContent = 'Checking Wikipedia for updates…';
+
+  const timeLabel = () => new Date().toLocaleTimeString('en-GB', { timeZone: 'Australia/Sydney', hour: '2-digit', minute: '2-digit' });
+
+  try {
+    const res = await fetch('https://en.wikipedia.org/w/api.php?action=parse&page=2026_Tour_de_France&prop=text&format=json&origin=*');
+    if(!res.ok) throw new Error('HTTP ' + res.status);
+    const json = await res.json();
+    const html = json && json.parse && json.parse.text && json.parse.text['*'];
+    if(!html) throw new Error('Unexpected response shape');
+
+    const doc = new DOMParser().parseFromString(html, 'text/html');
+    const tables = Array.from(doc.querySelectorAll('table'));
+    let updatedCount = 0;
+
+    // Stage winners table ("Stage characteristics")
+    const stageTable = tables.find(t => {
+      const headerText = (t.querySelector('tr') ? t.querySelector('tr').textContent : '').toLowerCase();
+      return headerText.includes('winner') && headerText.includes('course');
+    });
+    if(stageTable){
+      Array.from(stageTable.querySelectorAll('tr')).slice(1).forEach(row => {
+        const cells = Array.from(row.querySelectorAll('td, th'));
+        if(!cells.length) return;
+        const stageNum = parseInt(cells[0].textContent.trim(), 10);
+        if(!stageNum) return;
+        const winnerText = cells[cells.length - 1].textContent.replace(/\[[^\]]*\]/g, '').trim();
+        if(!winnerText || /stage|trial/i.test(winnerText)) return;
+        const stage = stages.find(s => s.n === stageNum);
+        if(stage && stage.winner !== winnerText){
+          stage.winner = winnerText;
+          stage.status = 'done';
+          updatedCount++;
+        }
+      });
+    }
+
+    // Classification leadership table (yellow/green/polka/white by stage)
+    const classTable = tables.find(t => {
+      const headerText = (t.querySelector('tr') ? t.querySelector('tr').textContent : '').toLowerCase();
+      return headerText.includes('general classification') && headerText.includes('points classification');
+    });
+    if(classTable){
+      const headerCells = Array.from(classTable.querySelectorAll('tr')[0].querySelectorAll('th,td')).map(c => c.textContent.trim().toLowerCase());
+      const rows = Array.from(classTable.querySelectorAll('tr')).slice(1).filter(r => r.querySelectorAll('td,th').length > 1);
+      if(rows.length){
+        const cells = Array.from(rows[rows.length - 1].querySelectorAll('td,th'));
+        const getCol = matchFn => {
+          const idx = headerCells.findIndex(matchFn);
+          return idx >= 0 && cells[idx] ? cells[idx].textContent.replace(/\[[^\]]*\]/g, '').trim() : null;
+        };
+        const yellow = getCol(h => h.includes('general'));
+        const green = getCol(h => h.includes('points'));
+        const polka = getCol(h => h.includes('mountain'));
+        const white = getCol(h => h.includes('young') || h.includes('youth'));
+        const setJersey = (id, val) => { const el = document.getElementById(id); if(el && val && el.textContent !== val){ el.textContent = val; updatedCount++; } };
+        setJersey('jersey-yellow-name', yellow);
+        setJersey('jersey-green-name', green);
+        setJersey('jersey-polka-name', polka);
+        setJersey('jersey-white-name', white);
+      }
+    }
+
+    const activeFilterBtn = document.querySelector('.filter-btn[data-filter].active');
+    renderStages(activeFilterBtn ? activeFilterBtn.dataset.filter : 'all');
+
+    if(banner){
+      banner.textContent = updatedCount > 0
+        ? `Found ${updatedCount} update${updatedCount > 1 ? 's' : ''} from Wikipedia · checked ${timeLabel()} AEST`
+        : `No new results on Wikipedia yet · checked ${timeLabel()} AEST`;
+    }
+  } catch(err){
+    if(banner) banner.textContent = `Live check unavailable right now (${timeLabel()} AEST) — showing last saved results. Try Refresh, or check official sources.`;
+    console.error('Wikipedia live-check failed:', err);
+  } finally {
+    if(btn) btn.disabled = false;
+  }
+}
+
+const wikiRefreshBtn = document.getElementById('wiki-refresh-btn');
+if(wikiRefreshBtn) wikiRefreshBtn.addEventListener('click', () => checkWikipediaUpdates(true));
+checkWikipediaUpdates(false);
+setInterval(() => checkWikipediaUpdates(false), 5 * 60 * 1000);
 </script>
 
 </body>
