@@ -483,18 +483,12 @@
   <!-- TEAMS PANEL -->
   <section class="panel" id="panel-teams">
     <div class="leader-note" style="margin-bottom:20px;"><b>UAE Team Emirates-XRG</b> lead the team classification after Stage 2 — a stage win, second place on the same day, and two riders in the overall top four.</div>
-    <div class="teams-controls" id="team-controls">
-      <button class="filter-btn team-filter-btn active" data-teamfilter="all">All 23 teams</button>
-      <button class="filter-btn team-filter-btn" data-teamfilter="wt">WorldTour (18)</button>
-      <button class="filter-btn team-filter-btn" data-teamfilter="pro">ProTeam invite (3)</button>
-      <button class="filter-btn team-filter-btn" data-teamfilter="wc">Wildcard (2)</button>
-    </div>
     <div class="team-grid" id="team-grid"></div>
   </section>
 </main>
 
 <footer>
-  <p class="version-badge">tdf2026-tracker v1.5.0</p>
+  <p class="version-badge">tdf2026-tracker v1.6.0</p>
   Route and results reflect reporting on the official 2026 Tour de France as of 6 July 2026. The race is in progress — treat all results and standings as a snapshot from the finish of Stage 2, and check official ASO or broadcaster sources for live updates on Stage 3 onward.
 </footer>
 
@@ -584,75 +578,75 @@ const gcStandings = [
 ];
 
 const teams = [
-  { name:"UAE Team Emirates-XRG", country:"UAE-registered", cat:"wt", leaderTeam:true,
-    riders:["Tadej Pogačar","Isaac Del Toro","Adam Yates","Brandon McNulty","Nils Politt"],
-    goal:"Defending champion Pogačar chasing a fifth Tour title, with Del Toro as a genuine plan B after his Stage 2 win." },
+  { name:"UAE Team Emirates-XRG", country:"United Arab Emirates", cat:"wt", leaderTeam:true,
+    riders:["Tadej Pogačar","Isaac Del Toro","Felix Großschartner","Brandon McNulty","Nils Politt","Florian Vermeersch","Tim Wellens","Adam Yates"],
+    goal:"Pogačar chasing a fifth Tour title, with a deep, versatile squad — including Del Toro fresh off his Stage 2 win — able to cover breaks and control the race." },
   { name:"Team Visma | Lease a Bike", country:"Netherlands", cat:"wt",
-    riders:["Jonas Vingegaard","Matteo Jorgenson","Davide Piganzoli"],
-    goal:"Vingegaard chasing the Giro–Tour double, racing without the injured Wout van Aert." },
+    riders:["Jonas Vingegaard","Edoardo Affini","Bruno Armirail","Victor Campenaerts","Matteo Jorgenson","Sepp Kuss","Davide Piganzoli","Per Strand Hagenes"],
+    goal:"Vingegaard chasing a third Tour win and the Giro–Tour double, racing without the injured Wout van Aert." },
   { name:"Red Bull-BORA-hansgrohe", country:"Germany", cat:"wt",
-    riders:["Remco Evenepoel","Florian Lipowitz"],
-    goal:"Evenepoel's first Tour with the team, partnered with 2025's best young rider Lipowitz." },
+    riders:["Remco Evenepoel","Florian Lipowitz","Mattia Cattaneo","Nico Denz","Jai Hindley","Jan Tratnik","Tim van Dijke","Maxim Van Gils"],
+    goal:"Evenepoel's first Tour with the team, sharing co-leadership with 2025's surprise podium finisher Lipowitz." },
   { name:"Decathlon CMA CGM Team", country:"France", cat:"wt",
-    riders:["Paul Seixas","Olav Kooij"],
-    goal:"19-year-old Seixas makes his Tour debut carrying French GC hopes; Kooij leads the sprint effort." },
-  { name:"Lidl-Trek", country:"USA", cat:"wt",
-    riders:["Juan Ayuso","Mads Pedersen","Mattias Skjelmose","Quinn Simmons"],
-    goal:"Ayuso for GC, with Pedersen, Skjelmose and Simmons spreading the load across sprints and classics-style finishes." },
+    riders:["Paul Seixas","Tiesj Benoot","Cees Bol","Daan Hoole","Olav Kooij","Aurélien Paret-Peintre","Nicolas Prodhomme","Matthew Riccitello"],
+    goal:"19-year-old Seixas making his Tour debut with GC ambitions, while Kooij leads the sprint effort." },
+  { name:"Lidl-Trek", country:"Germany", cat:"wt",
+    riders:["Juan Ayuso","Derek Gee-West","Mads Pedersen","Quinn Simmons","Mattias Skjelmose","Toms Skujiņš","Mathias Vacek","Carlos Verona"],
+    goal:"A GC push from new signing Ayuso, alongside stage wins and a green jersey tilt from Pedersen." },
   { name:"Netcompany Ineos", country:"United Kingdom", cat:"wt",
-    riders:["Kévin Vauquelin","Filippo Ganna","Thymen Arensman"],
-    goal:"A stage-hunting brief this year, led by Ganna's power and Vauquelin's punch." },
+    riders:["Thymen Arensman","Egan Bernal","Tobias Foss","Filippo Ganna","Dorian Godon","Michał Kwiatkowski","Josh Tarling","Kévin Vauquelin"],
+    goal:"A licence to race aggressively, with Vauquelin leading the team's first real GC push in years." },
   { name:"EF Education-EasyPost", country:"USA", cat:"wt",
-    riders:["Ben Healy","Richard Carapaz","Alex Baudin","Kasper Asgreen"],
-    goal:"Attacking, breakaway-first racing — Healy returns after wearing yellow in 2025." },
+    riders:["Richard Carapaz","Ben Healy","Kasper Asgreen","Michael Valgren","Alex Baudin","Sean Quinn","Max Walker","Georg Steinhauser"],
+    goal:"Attacking, breakaway-first racing behind Healy, who wore yellow and won a stage in 2025." },
   { name:"Alpecin-Premier Tech", country:"Belgium", cat:"wt",
-    riders:["Mathieu van der Poel","Jasper Philipsen","Kaden Groves"],
-    goal:"Three leaders across classics-style stages and bunch sprints." },
-  { name:"Bahrain-Victorious", country:"Bahrain", cat:"wt",
-    riders:["Antonio Tiberi","Lenny Martinez"],
-    goal:"Back for the overall after a strong Giro, with Tiberi and Martinez sharing GC ambitions." },
+    riders:["Mathieu van der Poel","Ramses Debruyne","Silvan Dillier","Tim Marsman","Jasper Philipsen","Edward Planckaert","Jonas Rickaert","Emiel Verstrynge"],
+    goal:"Stage wins through Philipsen's sprint, with Van der Poel doubling as lead-out man and opportunistic attacker." },
+  { name:"Bahrain Victorious", country:"Bahrain", cat:"wt",
+    riders:["Antonio Tiberi","Phil Bauhaus","Damiano Caruso","Kamil Gradek","Lenny Martinez","Matej Mohorič","Robert Stannard","Vlad Van Mechelen"],
+    goal:"GC campaigns for Tiberi and Martinez, with Mohorič hunting a stage from the breakaway." },
   { name:"Groupama-FDJ United", country:"France", cat:"wt",
-    riders:["Romain Grégoire"],
-    goal:"Grégoire as the team's GC and stage-win hope on home roads." },
+    riders:["Clément Berthet","Clément Braz Afonso","Ewen Costiou","Lorenzo Germani","Romain Grégoire","Guillaume Martin-Guyonnet","Quentin Pacher","Clément Russo"],
+    goal:"A top-10 GC bid from Martin-Guyonnet, with Grégoire aiming for mountain-stage raids." },
   { name:"Soudal Quick-Step", country:"Belgium", cat:"wt",
-    riders:["Tim Merlier"],
-    goal:"Pure sprint focus around Merlier for the flat stages." },
+    riders:["Pascal Eenkhoorn","Tim Merlier","Valentin Paret-Peintre","Jasper Stuyven","Dylan van Baarle","Bert Van Lerberghe","Ilan Van Wilder","Louis Vervaeke"],
+    goal:"An all-in sprint effort around Merlier after Mikel Landa's late withdrawal through injury." },
   { name:"Movistar Team", country:"Spain", cat:"wt",
-    riders:[],
-    goal:"Spanish squad looking for stage opportunities across the three weeks." },
+    riders:["Cian Uijtdebroeks","Pablo Castrillo","Alveiro Cepeda","Raúl García Pierna","Michel Hessmann","Nelson Oliveira","Javier Romo","Einer Rubio"],
+    goal:"A GC debut for Uijtdebroeks, backed by Rubio and Cepeda in the mountains." },
   { name:"Team Jayco AlUla", country:"Australia", cat:"wt",
-    riders:["Felix Engelhardt"],
-    goal:"Breakaway-focused, chasing stage wins wherever the race opens up." },
+    riders:["Pascal Ackermann","Luke Durbridge","Felix Engelhardt","Kelland O'Brien","Ben O'Connor","Michael Matthews","Luke Plapp","Mauro Schmid"],
+    goal:"Sprint wins for Ackermann, with Plapp given freedom to chase opportunistic breakaway stages." },
   { name:"Team Picnic PostNL", country:"Netherlands", cat:"wt",
-    riders:["Pavel Bittner","Frank van den Broek"],
-    goal:"Bittner leads if fit; otherwise the team hunts stages from the breakaway." },
+    riders:["Warren Barguil","Julius van den Berg","Frits Biesterbos","Pavel Bittner","Frank van den Broek","John Degenkolb","Robbe Dhondt","Niklas Märkl"],
+    goal:"Barguil and Van den Broek targeting hilly stages, with Bittner the team's fast man for sprints." },
   { name:"Uno-X Mobility", country:"Norway", cat:"wt",
-    riders:["Tobias Halland Johannessen","Jonas Abrahamsen","Søren Wærenskjold","Torstein Træen"],
-    goal:"Johannessen aiming for a GC top result after his 2025 top-10, with Abrahamsen a breakaway threat." },
+    riders:["Tobias Halland Johannessen","Jonas Abrahamsen","Anthon Charmig","Magnus Cort","Andreas Kron","Anders Skaarseth","Torstein Træen","Søren Wærenskjold"],
+    goal:"A GC push from Johannessen after his 2025 top-10, plus stage-hunting from Abrahamsen and Cort." },
   { name:"NSN Cycling Team", country:"Switzerland", cat:"wt",
-    riders:["Biniam Girmay"],
-    goal:"Swiss-licensed successor to Israel-Premier Tech, built around Girmay's sprint." },
+    riders:["Biniam Girmay","Lewis Askey","George Bennett","Marco Frigo","Matîs Louvel","Krists Neilands","Jake Stewart","Tom Van Asbroeck"],
+    goal:"Built around Girmay's sprint, racing under a new Swiss licence after last year's Israel-Premier Tech." },
   { name:"XDS Astana Team", country:"Kazakhstan", cat:"wt",
-    riders:[],
-    goal:"Targeting stage wins and the mountains classification." },
-  { name:"Lotto-Intermarché", country:"Belgium", cat:"wt",
-    riders:["Arnaud De Lie","Lennert van Eetvelt"],
-    goal:"De Lie and Van Eetvelt chasing a stage win after a difficult Giro." },
+    riders:["Davide Ballerini","Aaron Gate","Sergio Higuita","Max Kanter","Harold Tejada","Mike Teunissen","Simone Velasco","Nicolas Vinokurov"],
+    goal:"Stage hunting in the high mountains with Higuita and Tejada, plus a possible GC surprise from Higuita." },
+  { name:"Intermarché-Lotto", country:"Belgium", cat:"wt",
+    riders:["Huub Artz","Jenno Berckmoes","Lars Craps","Arnaud De Lie","Liam Slock","Lennert Van Eetvelt","Baptiste Veistroffer","Georg Zimmermann"],
+    goal:"A newly merged Belgian team chasing sprint wins through De Lie and stage raids from Van Eetvelt." },
   { name:"Cofidis", country:"France", cat:"pro",
-    riders:[],
-    goal:"ProTeam entry via 2025 UCI ranking, aiming for breakaway stage wins." },
-  { name:"Pinarello Q36.5 Pro Cycling Team", country:"Switzerland/UK", cat:"pro",
-    riders:["Tom Pidcock"],
-    goal:"Pidcock leads an ambitious GC and stage-win double bid on his Tour return." },
+    riders:["Piet Allegaert","Alex Aranburu","Jenthe Biermans","Ion Izagirre","Milan Fretin","Alex Kirsch","Hugo Page","Benjamin Thomas"],
+    goal:"A ProTeam entry via 2025 UCI ranking, targeting a surprise sprint win through Fretin." },
+  { name:"Pinarello Q36.5 Pro Cycling Team", country:"Switzerland", cat:"pro",
+    riders:["Tom Pidcock","Fred Wright","Xabier Mikel Azparren","Chris Harper","Quinten Hermans","Damien Howson","Xandro Meurisse","Brent Van Moer"],
+    goal:"A Tour debut earned on merit, led by Pidcock's GC and stage-win ambitions." },
   { name:"Tudor Pro Cycling Team", country:"Switzerland", cat:"pro",
-    riders:["Julian Alaphilippe","Michael Storer","Matteo Trentin"],
-    goal:"Alaphilippe headlines the hunt for a breakaway stage win." },
+    riders:["Julian Alaphilippe","Marco Haller","Marc Hirschi","Arvid de Kleijn","Rick Pluimers","Michael Storer","Matteo Trentin","Yannis Voisard"],
+    goal:"A breakaway stage win as the headline goal, led by former world champion Alaphilippe." },
   { name:"TotalEnergies", country:"France", cat:"wc",
-    riders:["Jordan Jegat"],
-    goal:"Wildcard invite; French outfit chasing stage days in the break." },
+    riders:["Nicolas Breuillard","Joris Delbove","Alexandre Delettre","Thibault Guernalec","Jordan Jegat","Mathis Le Berre","Anthony Turgis","Mattéo Vercher"],
+    goal:"A wildcard invite for the all-French squad, built around Jegat repeating his surprise 2025 top-10." },
   { name:"Caja Rural-Seguros RGA", country:"Spain", cat:"wc",
-    riders:["Fernando Gaviria","Alex Molenaar"],
-    goal:"Wildcard invite; Molenaar has already worn the polka-dot jersey after Stage 2." },
+    riders:["Abel Balderstone","Sebastian Berwick","Fernando Gaviria","Alex Molenaar","Joel Nicolau","Stefano Oldani","Jakub Otruba","José Félix Parra"],
+    goal:"A wildcard debut for the Spanish ProTeam; Molenaar has already worn the polka-dot jersey after Stage 2." },
 ];
 
 const typeMeta = {
@@ -662,7 +656,7 @@ const typeMeta = {
   mountain: {label:"Mountain", tag:"tag-mountain"},
 };
 
-const APP_VERSION = "1.5.0";
+const APP_VERSION = "1.6.0";
 
 // Approximate town-centre coordinates for the map view (schematic, not official race GPX)
 const townCoords = {
@@ -812,18 +806,16 @@ function renderGC(){
 
 const catLabel = { wt:"WorldTour", pro:"ProTeam invite", wc:"Wildcard" };
 
-function renderTeams(filter){
+function renderTeams(){
   const grid = document.getElementById('team-grid');
-  grid.innerHTML = teams
-    .filter(t => filter === 'all' || t.cat === filter)
-    .map(t => `
+  grid.innerHTML = teams.map(t => `
       <div class="team-card cat-${t.cat}${t.leaderTeam ? ' leader-team' : ''}">
         <div class="team-name">${t.name}</div>
         <div class="team-meta">
           <span class="team-country">${t.country}</span>
           <span class="team-cat-tag cat-${t.cat}">${catLabel[t.cat]}</span>
         </div>
-        ${t.riders.length ? `<div class="team-riders">${t.riders.join(' · ')}</div>` : ''}
+        <div class="team-riders">${t.riders.join(' · ')}</div>
         <div class="team-goal">${t.goal}</div>
       </div>
     `).join('');
@@ -837,13 +829,7 @@ document.querySelectorAll('.filter-btn[data-filter]').forEach(btn => {
   });
 });
 
-document.querySelectorAll('.team-filter-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.team-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    renderTeams(btn.dataset.teamfilter);
-  });
-});
+
 
 function goToStage(n){
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -927,7 +913,7 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
 
 renderStages('all');
 renderGC();
-renderTeams('all');
+renderTeams();
 </script>
 
 </body>
