@@ -375,6 +375,10 @@
   .team-cat-tag.cat-pro{ background: rgba(63,125,88,0.16); color: var(--sprint-green); }
   .team-cat-tag.cat-wc{ background: rgba(193,68,45,0.16); color: #e07a5f; }
   .team-riders{ font-size: 12px; color: var(--chalk); line-height: 1.5; margin-bottom: 8px; }
+  .team-riders ul{ margin: 0; padding-left: 16px; }
+  .team-riders li{ margin-bottom: 2px; }
+  .team-riders li.leader{ font-weight: 700; color: var(--maillot-jaune); list-style: none; margin-left: -16px; margin-bottom: 4px; }
+  .team-riders li.leader::before{ content: "● "; font-size: 9px; vertical-align: middle; }
   .team-goal{ font-size: 12px; color: var(--chalk-dim); line-height: 1.5; font-style: italic; }
 
   footer{ max-width: 960px; margin: 0 auto; padding: 10px 24px 50px; color: var(--chalk-dim); font-size: 11px; line-height: 1.6; }
@@ -503,7 +507,7 @@
 </main>
 
 <footer>
-  <p class="version-badge">tdf2026-tracker v1.7.0</p>
+  <p class="version-badge">tdf2026-tracker v1.8.0</p>
   Route and results reflect reporting on the official 2026 Tour de France as of 6 July 2026. The race is in progress — treat all results and standings as a snapshot from the finish of Stage 2, and check official ASO or broadcaster sources for live updates on Stage 3 onward.
 </footer>
 
@@ -671,7 +675,7 @@ const typeMeta = {
   mountain: {label:"Mountain", tag:"tag-mountain"},
 };
 
-const APP_VERSION = "1.7.0";
+const APP_VERSION = "1.8.0";
 
 // Approximate town-centre coordinates for the map view (schematic, not official race GPX)
 const townCoords = {
@@ -830,7 +834,12 @@ function renderTeams(){
           <span class="team-country">${t.country}</span>
           <span class="team-cat-tag cat-${t.cat}">${catLabel[t.cat]}</span>
         </div>
-        <div class="team-riders">${t.riders.join(' · ')}</div>
+        <div class="team-riders">
+          <ul>
+            <li class="leader">${t.riders[0]}</li>
+            ${t.riders.slice(1).map(r => `<li>${r}</li>`).join('')}
+          </ul>
+        </div>
         <div class="team-goal">${t.goal}</div>
       </div>
     `).join('');
