@@ -448,12 +448,12 @@
       <span><i style="background:transparent;border:1px solid var(--chalk-dim)"></i>Rest day city</span>
     </div>
     <div id="map"></div>
-    <p class="meta-note" style="margin-top:14px;">Straight-line route between stage towns, for orientation only — not the actual road course. Click a marker for stage details.</p>
+    <p class="meta-note" style="margin-top:14px;">Straight-line route between stage towns, for orientation only — not the actual road course. Click any marker to jump to that stage's details.</p>
   </section>
 </main>
 
 <footer>
-  <p class="version-badge">tdf2026-tracker v1.3.0</p>
+  <p class="version-badge">tdf2026-tracker v1.4.0</p>
   Route and results reflect reporting on the official 2026 Tour de France as of 6 July 2026. The race is in progress — treat all results and standings as a snapshot from the finish of Stage 2, and check official ASO or broadcaster sources for live updates on Stage 3 onward.
 </footer>
 
@@ -549,7 +549,7 @@ const typeMeta = {
   mountain: {label:"Mountain", tag:"tag-mountain"},
 };
 
-const APP_VERSION = "1.3.0";
+const APP_VERSION = "1.4.0";
 
 // Approximate town-centre coordinates for the map view (schematic, not official race GPX)
 const townCoords = {
@@ -656,6 +656,7 @@ function renderStages(filter){
 
     const wrap = document.createElement('div');
     wrap.className = 'stage' + (isToday ? ' today' : '') + (isDone ? ' done' : '');
+    wrap.id = 'stage-' + s.n;
 
     wrap.innerHTML = `
       <div class="stage-head">
@@ -704,6 +705,25 @@ document.querySelectorAll('.filter-btn').forEach(btn => {
   });
 });
 
+function goToStage(n){
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelector('.tab-btn[data-panel="stages"]').classList.add('active');
+  document.getElementById('panel-stages').classList.add('active');
+
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  document.querySelector('.filter-btn[data-filter="all"]').classList.add('active');
+  renderStages('all');
+
+  requestAnimationFrame(() => {
+    const el = document.getElementById('stage-' + n);
+    if(el){
+      el.classList.add('expanded');
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  });
+}
+
 let leafletMap = null;
 function renderMap(){
   if(leafletMap){ setTimeout(() => leafletMap.invalidateSize(), 50); return; }
@@ -732,18 +752,20 @@ function renderMap(){
         radius: 7, color: color, weight: 2, fillColor: color, fillOpacity: 0.85
       }).addTo(leafletMap);
       const aest = s.start ? toAEST(s.start) : null;
-      marker.bindPopup(`
-        <b>Stage ${s.n}</b> · ${s.date}<br>
-        ${s.from} → ${s.to}<br>
-        ${s.km} km${aest ? ` · start ${aest.label} AEST${aest.nextDay ? ' (next day)' : ''}` : ''}
-        ${s.winner ? `<br>🏆 ${s.winner}` : ''}
-      `);
+      marker.bindTooltip(`
+        <b>Stage ${s.n}</b> · ${s.from} → ${s.to}<br>
+        ${s.km} km${aest ? ` · ${aest.label} AEST` : ''}${s.winner ? `<br>🏆 ${s.winner}` : ''}
+        <br><span style="color:#e8b923">Click to view stage →</span>
+      `, { sticky: true, direction: 'top', offset: [0,-8] });
+      marker.on('click', () => goToStage(s.n));
+      marker.getElement && (marker.getElement().style.cursor = 'pointer');
     }
     // Mark stage-1 start town distinctly (Grand Départ) and Paris finish
     if(s.n === 1 && fromC){
-      L.circleMarker(fromC, { radius: 8, color: '#e8b923', weight: 3, fillColor: '#1c1a17', fillOpacity: 0.6 })
-        .addTo(leafletMap)
-        .bindPopup('<b>Grand Départ</b><br>Barcelona');
+      const gd = L.circleMarker(fromC, { radius: 8, color: '#e8b923', weight: 3, fillColor: '#1c1a17', fillOpacity: 0.6 })
+        .addTo(leafletMap);
+      gd.bindTooltip('<b>Grand Départ</b><br>Barcelona<br><span style="color:#e8b923">Click to view stage →</span>', { sticky: true });
+      gd.on('click', () => goToStage(1));
     }
   });
 
