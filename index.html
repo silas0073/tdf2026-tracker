@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Tour de France 2026 — Route &amp; Results Tracker</title>
 <meta name="description" content="Stage-by-stage route, results, and live jersey classifications for the 2026 Tour de France.">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 <style>
   :root{
     --asphalt: #1c1a17;
@@ -245,6 +247,22 @@
   .stage-body-inner{ padding: 14px 16px 16px; font-size: 13px; color: var(--chalk-dim); line-height: 1.55; }
   .stage-body-inner .highlight{ color: var(--maillot-jaune); font-weight: 600; }
 
+  .watch-links{ display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+  .watch-link{
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 700;
+    padding: 6px 12px; border-radius: 999px;
+    text-decoration: none;
+    border: 1px solid var(--line);
+    transition: border-color .15s ease, background .15s ease;
+  }
+  .watch-link.sbs{ color: var(--white-jersey); }
+  .watch-link.sbs:hover{ border-color: var(--white-jersey); background: rgba(233,228,214,0.06); }
+  .watch-link.yt{ color: #e8b0a2; }
+  .watch-link.yt:hover{ border-color: var(--kom-red); background: rgba(193,68,45,0.08); }
+  .start-line{ font-size: 11px; color: var(--chalk-dim); margin-top: 2px; }
+  .start-line b{ color: var(--chalk); }
+
   .result-table{ width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 12px; }
   .result-table th{ text-align: left; color: var(--chalk-dim); text-transform: uppercase; font-size: 10px; letter-spacing: 0.06em; padding: 4px 8px; border-bottom: 1px solid var(--line); }
   .result-table td{ padding: 5px 8px; border-bottom: 1px solid rgba(241,232,214,0.06); color: var(--chalk); }
@@ -286,6 +304,35 @@
     line-height: 1.5;
   }
   .leader-note b{ color: var(--chalk); }
+
+  /* ---- Map panel ---- */
+  #map{
+    height: 560px;
+    width: 100%;
+    border-radius: var(--radius);
+    border: 1px solid var(--line);
+    background: var(--asphalt-2);
+  }
+  .map-legend{
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin: 12px 0 18px;
+    font-size: 12px;
+    color: var(--chalk-dim);
+  }
+  .map-legend span{ display: inline-flex; align-items: center; gap: 6px; }
+  .map-legend i{ width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+  .leaflet-popup-content-wrapper{ background: var(--asphalt-2); color: var(--chalk); border-radius: var(--radius); }
+  .leaflet-popup-tip{ background: var(--asphalt-2); }
+  .leaflet-popup-content b{ color: var(--maillot-jaune); }
+  .leaflet-container{ font-family: inherit; }
+
+  .version-badge{
+    font-size: 11px;
+    color: var(--chalk-dim);
+    letter-spacing: 0.04em;
+  }
 
   footer{ max-width: 960px; margin: 0 auto; padding: 10px 24px 50px; color: var(--chalk-dim); font-size: 11px; line-height: 1.6; }
 
@@ -338,6 +385,7 @@
   <nav class="tabs">
     <button class="tab-btn active" data-panel="stages">Stages &amp; Route</button>
     <button class="tab-btn" data-panel="classifications">Classifications</button>
+    <button class="tab-btn" data-panel="map">Map</button>
   </nav>
 
   <!-- STAGES PANEL -->
@@ -389,9 +437,23 @@
     </div>
 
   </section>
+
+  <!-- MAP PANEL -->
+  <section class="panel" id="panel-map">
+    <div class="map-legend">
+      <span><i style="background:var(--white-jersey)"></i>Flat</span>
+      <span><i style="background:var(--maillot-jaune)"></i>Hilly</span>
+      <span><i style="background:var(--kom-red)"></i>Mountain</span>
+      <span><i style="background:var(--sprint-green)"></i>Time trial</span>
+      <span><i style="background:transparent;border:1px solid var(--chalk-dim)"></i>Rest day city</span>
+    </div>
+    <div id="map"></div>
+    <p class="meta-note" style="margin-top:14px;">Straight-line route between stage towns, for orientation only — not the actual road course. Click a marker for stage details.</p>
+  </section>
 </main>
 
 <footer>
+  <p class="version-badge">tdf2026-tracker v1.3.0</p>
   Route and results reflect reporting on the official 2026 Tour de France as of 6 July 2026. The race is in progress — treat all results and standings as a snapshot from the finish of Stage 2, and check official ASO or broadcaster sources for live updates on Stage 3 onward.
 </footer>
 
@@ -399,9 +461,10 @@
 const TODAY_STAGE = 3;
 
 const stages = [
-  {n:1, date:"Sat 4 Jul", from:"Barcelona", to:"Barcelona", km:19.6, type:"tt", status:"done",
+  {n:1, date:"Sat 4 Jul", from:"Barcelona", to:"Barcelona", km:19.6, type:"tt", status:"done", start:"17:05", startNote:"first team off; last team 18:55 CEST",
     note:"Opening team time trial with individual times recorded at the line — the first TTT format of its kind for the race, and the first Tour TTT since 1971.",
     winner:"Team Visma-Lease a Bike (Jonas Vingegaard first across the line, 21:47)",
+    youtube:"https://www.youtube.com/watch?v=Om6xI0JOzw4",
     results:[
       ["1","Team Visma-Lease a Bike","21:47"],
       ["2","Netcompany Ineos","+0:07"],
@@ -411,9 +474,10 @@ const stages = [
     ],
     jerseys:{yellow:"Jonas Vingegaard", green:"Egan Bernal", polka:"Tadej Pogačar", white:"Juan Ayuso"}
   },
-  {n:2, date:"Sun 5 Jul", from:"Tarragona", to:"Barcelona", km:168.5, type:"hilly", status:"done",
+  {n:2, date:"Sun 5 Jul", from:"Tarragona", to:"Barcelona", km:168.5, type:"hilly", status:"done", start:"13:45",
     note:"Coastal run from Tarragona back to Barcelona, finishing with three ascents of the Côte du Château de Montjuïc before the Stade Olympique.",
     winner:"Isaac Del Toro (UAE Team Emirates-XRG)",
+    youtube:"https://www.youtube.com/watch?v=1GRL0siKtwA",
     results:[
       ["1","Isaac Del Toro","3:40:01"],
       ["2","Tadej Pogačar","s.t."],
@@ -423,45 +487,45 @@ const stages = [
     ],
     jerseys:{yellow:"Jonas Vingegaard", green:"Isaac Del Toro", polka:"Alex Molenaar", white:"Isaac Del Toro"}
   },
-  {n:3, date:"Mon 6 Jul", from:"Granollers", to:"Les Angles", km:195.9, type:"mountain", status:"live",
+  {n:3, date:"Mon 6 Jul", from:"Granollers", to:"Les Angles", km:195.9, type:"mountain", status:"live", start:"12:15",
     note:"The Tour crosses into France and the Pyrenees on the same day, tackling the Col de Toses before a summit finish at the Les Angles ski resort. Nearly 3,900m of climbing. Racing today — result not yet final."},
-  {n:4, date:"Tue 7 Jul", from:"Carcassonne", to:"Foix", km:181.9, type:"hilly",
+  {n:4, date:"Tue 7 Jul", from:"Carcassonne", to:"Foix", km:181.9, type:"hilly", start:"13:05",
     note:"Rolling terrain between two fortified Tour towns — Carcassonne's citadel to Foix beneath its castle. No classified summits, but enough undulation to keep sprinters' teams honest."},
-  {n:5, date:"Wed 8 Jul", from:"Lannemezan", to:"Pau", km:158.3, type:"flat",
+  {n:5, date:"Wed 8 Jul", from:"Lannemezan", to:"Pau", km:158.3, type:"flat", start:"13:05",
     note:"A largely flat run into Pau, one of the Tour's most storied stage towns since 1930. Last clean chance for the fast men before the high Pyrenees."},
-  {n:6, date:"Thu 9 Jul", from:"Pau", to:"Gavarnie-Gèdre", km:186.2, type:"mountain",
+  {n:6, date:"Thu 9 Jul", from:"Pau", to:"Gavarnie-Gèdre", km:186.2, type:"mountain", start:"12:15",
     note:"The first real verdict of the race: Col d'Aspin then the Col du Tourmalet, the most-used high mountain pass in Tour history, before a new summit finish at the gates of the Cirque de Gavarnie."},
-  {n:7, date:"Fri 10 Jul", from:"Hagetmau", to:"Bordeaux", km:175.1, type:"flat",
+  {n:7, date:"Fri 10 Jul", from:"Hagetmau", to:"Bordeaux", km:175.1, type:"flat", start:"13:05",
     note:"Pancake-flat run through the Landes forests into Bordeaux, a happy hunting ground for sprinters historically. A bunch finish looks near-certain."},
-  {n:8, date:"Sat 11 Jul", from:"Périgueux", to:"Bergerac", km:180.4, type:"flat",
+  {n:8, date:"Sat 11 Jul", from:"Périgueux", to:"Bergerac", km:180.4, type:"flat", start:"13:05",
     note:"Another day built for the fast men, riding through the Dordogne wine country between two regional capitals."},
-  {n:9, date:"Sun 12 Jul", from:"Malemort", to:"Ussel", km:185.5, type:"hilly",
+  {n:9, date:"Sun 12 Jul", from:"Malemort", to:"Ussel", km:185.5, type:"hilly", start:"13:05",
     note:"A transitional stage through the Corrèze ahead of the first rest day — a good day for a breakaway if the GC teams sit up."},
   {n:"R1", rest:true, date:"Mon 13 Jul", note:"First rest day."},
-  {n:10, date:"Tue 14 Jul", from:"Aurillac", to:"Le Lioran", km:166.6, type:"mountain",
+  {n:10, date:"Tue 14 Jul", from:"Aurillac", to:"Le Lioran", km:166.6, type:"mountain", start:"12:15",
     note:"The race enters the Massif Central, a range of old volcanic climbs that rarely make headlines but regularly cause damage — a genuine wildcard mountain stage."},
-  {n:11, date:"Wed 15 Jul", from:"Vichy", to:"Nevers", km:161.3, type:"flat",
+  {n:11, date:"Wed 15 Jul", from:"Vichy", to:"Nevers", km:161.3, type:"flat", start:"13:05",
     note:"A flat transition stage through central France, likely to end in a bunch sprint."},
-  {n:12, date:"Thu 16 Jul", from:"Nevers Magny-Cours", to:"Chalon-sur-Saône", km:179.1, type:"flat",
+  {n:12, date:"Thu 16 Jul", from:"Nevers Magny-Cours", to:"Chalon-sur-Saône", km:179.1, type:"flat", start:"13:05",
     note:"Starting from the Circuit de Nevers Magny-Cours motor-racing venue, another day set up for the sprint teams."},
-  {n:13, date:"Fri 17 Jul", from:"Dole", to:"Belfort", km:205.8, type:"hilly",
+  {n:13, date:"Fri 17 Jul", from:"Dole", to:"Belfort", km:205.8, type:"hilly", start:"13:05",
     note:"The longest stage of the race, through the rolling Jura hills. No classified summit, but 206km of cumulative fatigue can make or break a breakaway."},
-  {n:14, date:"Sat 18 Jul", from:"Mulhouse", to:"Le Markstein", km:155.3, type:"mountain",
+  {n:14, date:"Sat 18 Jul", from:"Mulhouse", to:"Le Markstein", km:155.3, type:"mountain", start:"12:15",
     note:"An underrated Vosges stage that climbs early and often — one of the most demanding days of the race relative to its modest distance."},
-  {n:15, date:"Sun 19 Jul", from:"Champagnole", to:"Plateau de Solaison", km:183.9, type:"mountain",
+  {n:15, date:"Sun 19 Jul", from:"Champagnole", to:"Plateau de Solaison", km:183.9, type:"mountain", start:"12:15",
     note:"A brand-new summit finish never before used by the Tour, at 1,471m in the Haute-Savoie. Falls right before the second rest day, so time lost here can't be recovered quickly."},
   {n:"R2", rest:true, date:"Mon 20 Jul", note:"Second rest day."},
-  {n:16, date:"Tue 21 Jul", from:"Évian-les-Bains", to:"Thonon-les-Bains", km:26.1, type:"tt",
+  {n:16, date:"Tue 21 Jul", from:"Évian-les-Bains", to:"Thonon-les-Bains", km:26.1, type:"tt", start:"12:30", startNote:"first rider off; GC contenders roll ~17:00 CEST",
     note:"The second and final individual time trial, on the shores of Lake Geneva, opening with the Côte de Larringes — enough of a climb to favour all-rounders over pure specialists."},
-  {n:17, date:"Wed 22 Jul", from:"Chambéry", to:"Voiron", km:174.7, type:"flat",
+  {n:17, date:"Wed 22 Jul", from:"Chambéry", to:"Voiron", km:174.7, type:"flat", start:"13:05",
     note:"A last realistic sprint opportunity before the race turns into the high Alps for its final act."},
-  {n:18, date:"Thu 23 Jul", from:"Voiron", to:"Orcières-Merlette", km:185.2, type:"mountain",
+  {n:18, date:"Thu 23 Jul", from:"Voiron", to:"Orcières-Merlette", km:185.2, type:"mountain", start:"12:15",
     note:"The three-day Alpine finale begins, climbing to a summit finish at Orcières-Merlette."},
-  {n:19, date:"Fri 24 Jul", from:"Gap", to:"Alpe d'Huez", km:127.9, type:"mountain",
+  {n:19, date:"Fri 24 Jul", from:"Gap", to:"Alpe d'Huez", km:127.9, type:"mountain", start:"12:15",
     note:"Short but savage, finishing on the legendary 21 hairpins of Alpe d'Huez for the first time since 2022."},
-  {n:20, date:"Sat 25 Jul", from:"Le Bourg-d'Oisans", to:"Alpe d'Huez", km:170.9, type:"mountain",
+  {n:20, date:"Sat 25 Jul", from:"Le Bourg-d'Oisans", to:"Alpe d'Huez", km:170.9, type:"mountain", start:"12:15",
     note:"A brutal send-off: the Croix de Fer, Télégraphe and Galibier (2,631m, the race's highest point) before a second summit finish on Alpe d'Huez. Likely the last chance to overturn the general classification."},
-  {n:21, date:"Sun 26 Jul", from:"Paris", to:"Paris", km:132, type:"flat",
+  {n:21, date:"Sun 26 Jul", from:"Paris", to:"Paris", km:132, type:"flat", start:"16:30", startNote:"finale on the Champs-Élysées follows in the evening",
     note:"The traditional finale, extended again through Montmartre with three ascents of Rue Lepic before the sprinters' showdown on the Champs-Élysées."},
 ];
 
@@ -484,6 +548,51 @@ const typeMeta = {
   hilly: {label:"Hilly", tag:"tag-hilly"},
   mountain: {label:"Mountain", tag:"tag-mountain"},
 };
+
+const APP_VERSION = "1.3.0";
+
+// Approximate town-centre coordinates for the map view (schematic, not official race GPX)
+const townCoords = {
+  "Barcelona":[41.3851,2.1734], "Tarragona":[41.1189,1.2445], "Granollers":[41.6083,2.2886],
+  "Les Angles":[42.5667,2.0833], "Carcassonne":[43.2130,2.3491], "Foix":[42.9647,1.6053],
+  "Lannemezan":[43.1167,0.3833], "Pau":[43.2951,-0.3708], "Gavarnie-Gèdre":[42.7333,-0.0167],
+  "Hagetmau":[43.6500,-0.5833], "Bordeaux":[44.8378,-0.5792], "Périgueux":[45.1848,0.7210],
+  "Bergerac":[44.8508,0.4814], "Malemort":[45.1833,1.5667], "Ussel":[45.5486,2.3067],
+  "Aurillac":[44.9282,2.4444], "Le Lioran":[45.0500,2.6333], "Vichy":[46.1250,3.4256],
+  "Nevers":[46.9896,3.1591], "Nevers Magny-Cours":[46.8667,3.1500], "Chalon-sur-Saône":[46.7803,4.8528],
+  "Dole":[47.0967,5.4894], "Belfort":[47.6386,6.8631], "Mulhouse":[47.7508,7.3359],
+  "Le Markstein":[47.9092,7.0244], "Champagnole":[46.7458,5.9067], "Plateau de Solaison":[45.9833,6.3167],
+  "Évian-les-Bains":[46.4004,6.5942], "Thonon-les-Bains":[46.3714,6.4783], "Chambéry":[45.5646,5.9178],
+  "Voiron":[45.3667,5.5833], "Orcières-Merlette":[44.6833,6.3333], "Gap":[44.5594,6.0786],
+  "Alpe d'Huez":[45.0917,6.0708], "Le Bourg-d'Oisans":[45.0578,6.0308], "Paris":[48.8566,2.3522],
+};
+
+// The Tour runs CEST (UTC+2) all race; Sydney is AEST (UTC+10) in July (no daylight saving) — a flat +8h offset.
+function toAEST(cest){
+  if(!cest) return null;
+  const [h,m] = cest.split(':').map(Number);
+  let hh = h + 8;
+  const nextDay = hh >= 24;
+  if(nextDay) hh -= 24;
+  const pad = n => String(n).padStart(2,'0');
+  return { label: `${pad(hh)}:${pad(m)}`, nextDay };
+}
+
+function startLine(s){
+  if(!s.start) return '';
+  const aest = toAEST(s.start);
+  return `<div class="start-line">Start <b>${s.start}</b> CEST · <b>${aest.label}</b> AEST${aest.nextDay ? ' (next day)' : ''}${s.startNote ? ` — ${s.startNote}` : ''}</div>`;
+}
+
+function watchLinks(s){
+  if(s.rest) return '';
+  const links = [];
+  links.push(`<a class="watch-link sbs" href="https://www.sbs.com.au/ondemand/collection/tour-de-france-stage-${s.n}" target="_blank" rel="noopener">📺 SBS On Demand</a>`);
+  if(s.youtube){
+    links.push(`<a class="watch-link yt" href="${s.youtube}" target="_blank" rel="noopener">▶ Highlights</a>`);
+  }
+  return `<div class="watch-links">${links.join('')}</div>`;
+}
 
 function profileSvg(type, seed){
   const w = 300, h = 30;
@@ -553,7 +662,7 @@ function renderStages(filter){
         <div class="stage-num display">${s.n}</div>
         <div class="stage-route">
           <div class="towns">${s.from} → ${s.to}</div>
-          <div class="date">${s.date}${isToday ? ' · Live today' : ''}</div>
+          <div class="date">${s.date}${isToday ? ' · Live today' : ''}${s.start ? ' · ' + toAEST(s.start).label + ' AEST' + (toAEST(s.start).nextDay ? ' +1' : '') : ''}</div>
           ${s.winner ? `<div class="winner-line">🏆 ${s.winner}</div>` : ''}
         </div>
         <div class="stage-type-tag ${meta.tag}">${meta.label}</div>
@@ -562,9 +671,11 @@ function renderStages(filter){
       <div class="stage-profile">${profileSvg(s.type, idx+1)}</div>
       <div class="stage-body">
         <div class="stage-body-inner">
+          ${startLine(s)}
           ${s.note}
           ${resultTable(s.results)}
           ${jerseyLine(s.jerseys)}
+          ${watchLinks(s)}
         </div>
       </div>
     `;
@@ -593,12 +704,62 @@ document.querySelectorAll('.filter-btn').forEach(btn => {
   });
 });
 
+let leafletMap = null;
+function renderMap(){
+  if(leafletMap){ setTimeout(() => leafletMap.invalidateSize(), 50); return; }
+
+  leafletMap = L.map('map', { scrollWheelZoom: false }).setView([45.5, 3.5], 5.3);
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+    attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
+    maxZoom: 12
+  }).addTo(leafletMap);
+
+  const typeColor = { flat:'#e9e4d6', hilly:'#e8b923', mountain:'#c1442d', tt:'#3f7d58' };
+  const latlngs = [];
+  const seenTowns = new Set();
+
+  stages.forEach(s => {
+    if(s.rest) return;
+    const fromC = townCoords[s.from];
+    const toC = townCoords[s.to];
+    if(fromC) latlngs.push(fromC);
+    if(toC) latlngs.push(toC);
+
+    if(toC){
+      const key = `${s.n}-${s.to}`;
+      const color = typeColor[s.type] || '#e9e4d6';
+      const marker = L.circleMarker(toC, {
+        radius: 7, color: color, weight: 2, fillColor: color, fillOpacity: 0.85
+      }).addTo(leafletMap);
+      const aest = s.start ? toAEST(s.start) : null;
+      marker.bindPopup(`
+        <b>Stage ${s.n}</b> · ${s.date}<br>
+        ${s.from} → ${s.to}<br>
+        ${s.km} km${aest ? ` · start ${aest.label} AEST${aest.nextDay ? ' (next day)' : ''}` : ''}
+        ${s.winner ? `<br>🏆 ${s.winner}` : ''}
+      `);
+    }
+    // Mark stage-1 start town distinctly (Grand Départ) and Paris finish
+    if(s.n === 1 && fromC){
+      L.circleMarker(fromC, { radius: 8, color: '#e8b923', weight: 3, fillColor: '#1c1a17', fillOpacity: 0.6 })
+        .addTo(leafletMap)
+        .bindPopup('<b>Grand Départ</b><br>Barcelona');
+    }
+  });
+
+  if(latlngs.length){
+    L.polyline(latlngs, { color: '#f1e8d6', weight: 2, opacity: 0.35, dashArray: '4,6' }).addTo(leafletMap);
+    leafletMap.fitBounds(latlngs, { padding: [20,20] });
+  }
+}
+
 document.querySelectorAll('.tab-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
     document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
     btn.classList.add('active');
     document.getElementById('panel-' + btn.dataset.panel).classList.add('active');
+    if(btn.dataset.panel === 'map') renderMap();
   });
 });
 
