@@ -381,6 +381,25 @@
   .team-riders li.leader::before{ content: "● "; font-size: 9px; vertical-align: middle; }
   .team-goal{ font-size: 12px; color: var(--chalk-dim); line-height: 1.5; font-style: italic; }
 
+  /* ---- News panel ---- */
+  .news-list{ display: flex; flex-direction: column; gap: 10px; }
+  .news-card{
+    background: var(--asphalt-2);
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--maillot-jaune);
+    border-radius: var(--radius);
+    padding: 14px 16px;
+    text-decoration: none;
+    display: block;
+    transition: border-color .15s ease, background .15s ease;
+  }
+  .news-card:hover{ background: var(--asphalt-3); border-left-color: var(--kom-red); }
+  .news-meta{ font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--chalk-dim); margin-bottom: 6px; }
+  .news-meta .src{ color: var(--maillot-jaune); font-weight: 700; }
+  .news-headline{ font-size: 14px; font-weight: 700; color: var(--chalk); margin-bottom: 4px; line-height: 1.4; }
+  .news-blurb{ font-size: 12px; color: var(--chalk-dim); line-height: 1.5; }
+  .news-link-hint{ font-size: 11px; color: var(--kom-red); margin-top: 6px; font-weight: 600; }
+
   footer{ max-width: 960px; margin: 0 auto; padding: 10px 24px 50px; color: var(--chalk-dim); font-size: 11px; line-height: 1.6; }
 
   @media (max-width: 560px){
@@ -435,6 +454,7 @@
     <button class="tab-btn" data-panel="classifications">Classifications</button>
     <button class="tab-btn" data-panel="map">Map</button>
     <button class="tab-btn" data-panel="teams">Teams</button>
+    <button class="tab-btn" data-panel="news">News</button>
   </nav>
 
   <!-- STAGES PANEL -->
@@ -505,10 +525,16 @@
     <div class="leader-note" style="margin-bottom:20px;"><b>UAE Team Emirates-XRG</b> lead the team classification after Stage 3, ahead of Red Bull-Bora-hansgrohe and Lidl-Trek.</div>
     <div class="team-grid" id="team-grid"></div>
   </section>
+
+  <!-- NEWS PANEL -->
+  <section class="panel" id="panel-news">
+    <p class="meta-note" style="margin-bottom:16px;">A curated set of storylines from around the race, checked as of Stage 3. This list isn't auto-updating like the results banner — ask and I'll refresh it with whatever's happened since.</p>
+    <div class="news-list" id="news-list"></div>
+  </section>
 </main>
 
 <footer>
-  <p class="version-badge">tdf2026-tracker v1.10.0</p>
+  <p class="version-badge">tdf2026-tracker v1.11.0</p>
   Route and results reflect reporting on the official 2026 Tour de France as of Stage 3 (6 July 2026). The site auto-checks Wikipedia's 2026 Tour de France article every few minutes for newer stage winners and jersey holders — see the banner at the top for the last check time. If a check fails or Wikipedia hasn't been updated yet, the last saved results stay in place.
 </footer>
 
@@ -700,6 +726,37 @@ const teams = [
     goal:"A wildcard debut for the Spanish ProTeam; Molenaar has already worn the polka-dot jersey after Stage 2." },
 ];
 
+const news = [
+  { date:"6 Jul", source:"NBC Sports / Cycling Weekly",
+    headline:"Wildfires force organisers to bar fans from the Stage 3 finish",
+    blurb:"Extreme heat across southern Europe fanned wildfires near Les Angles, prompting race organisers to close the final stretch of the mountain finish to spectators as a safety precaution.",
+    link:"https://www.nbcsports.com/cycling/tour-de-france" },
+  { date:"6 Jul", source:"NBC Sports",
+    headline:"Crash near Sant Feliu de Codines early in Stage 3",
+    blurb:"Several riders went down rounding a bend on the climb out of Sant Feliu de Codines in the opening kilometres of the Pyrenees stage.",
+    link:"https://www.nbcsports.com/cycling/tour-de-france" },
+  { date:"6 Jul", source:"Cyclingnews",
+    headline:"UAE mechanic fined for riding Del Toro's spare bike against traffic",
+    blurb:"A UAE Team Emirates-XRG mechanic picked up a fine after riding one of Isaac Del Toro's spare bikes the wrong way against oncoming race traffic during Stage 3.",
+    link:"https://www.cyclingnews.com/races/tour-de-france-2026/" },
+  { date:"5 Jul", source:"Cyclingnews",
+    headline:"Del Toro thanks Pogačar for the Stage 2 stage win",
+    blurb:"Isaac Del Toro spoke about the emotion of his first Tour stage win in Barcelona, crediting teammate and team leader Tadej Pogačar for setting up the finish rather than contesting it himself.",
+    link:"https://www.cyclingnews.com/races/tour-de-france-2026/" },
+  { date:"6 Jul", source:"Cyclingnews",
+    headline:"Seixas gets through a nervy Tour debut on the road stages",
+    blurb:"19-year-old Paul Seixas came through the opening road stages of his first Tour de France without major incident, despite a mechanical scare along the way.",
+    link:"https://www.cyclingnews.com/races/tour-de-france-2026/" },
+  { date:"6 Jul", source:"Cyclingnews",
+    headline:"Publicity caravan shortened for the run into Les Angles",
+    blurb:"The Tour's promotional caravan didn't complete the final 40km of the Stage 3 route into Les Angles, a logistics adjustment tied to the mountain finish and heightened wildfire risk in the area.",
+    link:"https://www.cyclingnews.com/races/tour-de-france-2026/" },
+  { date:"4 Jul", source:"Cyclingnews",
+    headline:"UAE picks up the race's first yellow-card penalty",
+    blurb:"UAE Team Emirates-XRG became the first team penalised under the Tour's yellow-card conduct system this year, though no rider suspension resulted.",
+    link:"https://www.cyclingnews.com/races/tour-de-france-2026/" },
+];
+
 const typeMeta = {
   tt: {label:"Time Trial", tag:"tag-tt"},
   flat: {label:"Flat", tag:"tag-flat"},
@@ -707,7 +764,7 @@ const typeMeta = {
   mountain: {label:"Mountain", tag:"tag-mountain"},
 };
 
-const APP_VERSION = "1.10.0";
+const APP_VERSION = "1.11.0";
 
 // Approximate town-centre coordinates for the map view (schematic, not official race GPX)
 const townCoords = {
@@ -877,6 +934,18 @@ function renderTeams(){
     `).join('');
 }
 
+function renderNews(){
+  const list = document.getElementById('news-list');
+  list.innerHTML = news.map(item => `
+    <a class="news-card" href="${item.link}" target="_blank" rel="noopener">
+      <div class="news-meta"><span class="src">${item.source}</span> · ${item.date}</div>
+      <div class="news-headline">${item.headline}</div>
+      <div class="news-blurb">${item.blurb}</div>
+      <div class="news-link-hint">Read more →</div>
+    </a>
+  `).join('');
+}
+
 document.querySelectorAll('.filter-btn[data-filter]').forEach(btn => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('.filter-btn[data-filter]').forEach(b => b.classList.remove('active'));
@@ -979,6 +1048,7 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
 renderStages('all');
 renderGC();
 renderTeams();
+renderNews();
 
 async function checkWikipediaUpdates(manual){
   const banner = document.getElementById('live-banner-text');
