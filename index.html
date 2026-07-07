@@ -508,12 +508,12 @@
 </main>
 
 <footer>
-  <p class="version-badge">tdf2026-tracker v1.9.1</p>
+  <p class="version-badge">tdf2026-tracker v1.10.0</p>
   Route and results reflect reporting on the official 2026 Tour de France as of Stage 3 (6 July 2026). The site auto-checks Wikipedia's 2026 Tour de France article every few minutes for newer stage winners and jersey holders — see the banner at the top for the last check time. If a check fails or Wikipedia hasn't been updated yet, the last saved results stay in place.
 </footer>
 
 <script>
-const TODAY_STAGE = 4;
+let TODAY_STAGE = null; // computed automatically below, from today's date
 
 const stages = [
   {n:1, date:"Sat 4 Jul", from:"Barcelona", to:"Barcelona", km:19.6, type:"tt", status:"done", start:"17:05", startNote:"first team off; last team 18:55 CEST",
@@ -593,6 +593,27 @@ const stages = [
   {n:21, date:"Sun 26 Jul", from:"Paris", to:"Paris", km:132, type:"flat", start:"16:30", startNote:"finale on the Champs-Élysées follows in the evening",
     note:"The traditional finale, extended again through Montmartre with three ascents of Rue Lepic before the sprinters' showdown on the Champs-Élysées."},
 ];
+
+function computeTodayStage(){
+  // Race runs on French local time; use Paris date so the "today" marker flips at the same
+  // moment the race day actually changes, regardless of the viewer's own timezone.
+  const todayStr = new Date().toLocaleDateString('en-CA', { timeZone: 'Europe/Paris' }); // 'YYYY-MM-DD'
+  const monthMap = { Jul: 7 };
+  const dated = stages
+    .filter(s => !s.rest)
+    .map(s => {
+      const parts = s.date.split(' '); // ["Sat","4","Jul"]
+      const day = parseInt(parts[1], 10);
+      const month = monthMap[parts[2]] || 7;
+      return { n: s.n, iso: `2026-${String(month).padStart(2,'0')}-${String(day).padStart(2,'0')}` };
+    });
+  const exact = dated.find(d => d.iso === todayStr);
+  if(exact) return exact.n;
+  const upcoming = dated.find(d => d.iso > todayStr);
+  if(upcoming) return upcoming.n; // between stages (e.g. rest day) — highlight the next one
+  return dated[dated.length - 1].n; // after the race has finished — leave the finale highlighted
+}
+TODAY_STAGE = computeTodayStage();
 
 const gcStandings = [
   {pos:1, name:"Tadej Pogačar", team:"UAE Team Emirates-XRG", gap:"08:46:55", leader:true},
@@ -686,7 +707,7 @@ const typeMeta = {
   mountain: {label:"Mountain", tag:"tag-mountain"},
 };
 
-const APP_VERSION = "1.9.1";
+const APP_VERSION = "1.10.0";
 
 // Approximate town-centre coordinates for the map view (schematic, not official race GPX)
 const townCoords = {
@@ -1026,6 +1047,7 @@ async function checkWikipediaUpdates(manual){
       }
     }
 
+    TODAY_STAGE = computeTodayStage();
     const activeFilterBtn = document.querySelector('.filter-btn[data-filter].active');
     renderStages(activeFilterBtn ? activeFilterBtn.dataset.filter : 'all');
 
