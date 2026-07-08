@@ -342,6 +342,16 @@
     cursor: pointer;
   }
   .stage-icon-marker.gd{ width: 30px; height: 30px; font-size: 15px; }
+  .stage-icon-marker.today-stage{
+    border-color: var(--maillot-jaune);
+    box-shadow: 0 0 0 1px rgba(0,0,0,0.4), 0 0 0 5px rgba(232,185,35,0.35);
+    animation: mapTodayPulse 1.8s infinite ease-in-out;
+    width: 30px; height: 30px; font-size: 15px;
+  }
+  @keyframes mapTodayPulse{
+    0%,100%{ box-shadow: 0 0 0 1px rgba(0,0,0,0.4), 0 0 0 5px rgba(232,185,35,0.35); }
+    50%{ box-shadow: 0 0 0 1px rgba(0,0,0,0.4), 0 0 0 8px rgba(232,185,35,0.12); }
+  }
 
   .version-badge{
     font-size: 11px;
@@ -454,7 +464,7 @@
 
     <div class="class-section">
       <h2><span class="dot" style="background:var(--maillot-jaune)"></span>General Classification</h2>
-      <p class="as-of">After Stage 3 · Les Angles</p>
+      <p class="as-of" id="as-of-gc">After Stage 3 · Les Angles</p>
       <table class="gc">
         <thead><tr><th class="pos">Pos</th><th>Rider</th><th>Team</th><th class="gap">Gap</th></tr></thead>
         <tbody id="gc-body"></tbody>
@@ -495,6 +505,7 @@
       <span><i style="background:var(--kom-red)">🗻</i>Mountain</span>
       <span><i style="background:var(--sprint-green)">⏱</i>Time trial</span>
       <span><i style="background:#1c1a17;border:2px solid var(--maillot-jaune)">🚩</i>Grand Départ</span>
+      <span><i style="background:#1c1a17;border:2px solid var(--maillot-jaune);box-shadow:0 0 0 3px rgba(232,185,35,0.3)">●</i>Today's stage</span>
     </div>
     <div id="map"></div>
     <p class="meta-note" style="margin-top:14px;">Straight-line route between stage towns, for orientation only — not the actual road course. Click any marker to jump to that stage's details.</p>
@@ -508,7 +519,7 @@
 </main>
 
 <footer>
-  <p class="version-badge">tdf2026-tracker v1.12.0</p>
+  <p class="version-badge">tdf2026-tracker v1.13.0</p>
   Route and results reflect reporting on the official 2026 Tour de France as of Stage 3 (6 July 2026). The site auto-checks Wikipedia's 2026 Tour de France article every few minutes for newer stage winners and jersey holders — see the banner at the top for the last check time. If a check fails or Wikipedia hasn't been updated yet, the last saved results stay in place.
 </footer>
 
@@ -615,6 +626,33 @@ function computeTodayStage(){
 }
 TODAY_STAGE = computeTodayStage();
 
+const monthFull = { Jul: 'July' };
+
+function latestCompletedStage(){
+  const done = stages.filter(s => !s.rest && s.status === 'done');
+  return done.length ? done[done.length - 1] : null;
+}
+
+function updateAsOfLabels(){
+  const latest = latestCompletedStage();
+  if(!latest) return;
+
+  document.querySelectorAll('.as-of').forEach(el => {
+    if(el.id === 'as-of-gc'){
+      el.textContent = `After Stage ${latest.n} · ${latest.to}`;
+    } else {
+      el.textContent = `After Stage ${latest.n}`;
+    }
+  });
+
+  const parts = latest.date.split(' '); // ["Mon","6","Jul"]
+  const dateLabel = `${parts[1]} ${monthFull[parts[2]] || parts[2]}`;
+  const snap = document.getElementById('snapshot-note');
+  if(snap){
+    snap.textContent = `Standings shown as of the finish of Stage ${latest.n} (${latest.to}, ${dateLabel}). Auto-checks Wikipedia every few minutes for newer results — see the banner above for when it last found something new.`;
+  }
+}
+
 const gcStandings = [
   {pos:1, name:"Tadej Pogačar", team:"UAE Team Emirates-XRG", gap:"08:46:55", leader:true},
   {pos:2, name:"Jonas Vingegaard", team:"Visma-Lease a Bike", gap:"s.t."},
@@ -708,7 +746,7 @@ const typeMeta = {
   mountain: {label:"Mountain", tag:"tag-mountain"},
 };
 
-const APP_VERSION = "1.12.0";
+const APP_VERSION = "1.13.0";
 
 // Approximate town-centre coordinates for the map view (schematic, not official race GPX)
 const townCoords = {
@@ -932,16 +970,18 @@ function renderMap(){
     if(toC){
       const color = typeColor[s.type] || '#e9e4d6';
       const glyph = typeIcon[s.type] || '🏁';
+      const isToday = s.n === TODAY_STAGE;
+      const size = isToday ? 30 : 26;
       const icon = L.divIcon({
         className: '',
-        html: `<div class="stage-icon-marker" style="background:${color};color:${typeIconColor[s.type]||'#1c1a17'};">${glyph}</div>`,
-        iconSize: [26,26],
-        iconAnchor: [13,13]
+        html: `<div class="stage-icon-marker${isToday ? ' today-stage' : ''}" style="background:${color};color:${typeIconColor[s.type]||'#1c1a17'};">${glyph}</div>`,
+        iconSize: [size, size],
+        iconAnchor: [size/2, size/2]
       });
-      const marker = L.marker(toC, { icon }).addTo(leafletMap);
+      const marker = L.marker(toC, { icon, zIndexOffset: isToday ? 1000 : 0 }).addTo(leafletMap);
       const aest = s.start ? toAEST(s.start) : null;
       marker.bindTooltip(`
-        <b>Stage ${s.n}</b> · ${s.from} → ${s.to}<br>
+        <b>Stage ${s.n}</b>${isToday ? ' · Today' : ''} · ${s.from} → ${s.to}<br>
         ${s.km} km${aest ? ` · ${aest.label} AEST` : ''}${s.winner ? `<br>🏆 ${s.winner}` : ''}
         <br><span style="color:#e8b923">Click to view stage →</span>
       `, { sticky: true, direction: 'top', offset: [0,-14] });
@@ -980,6 +1020,7 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
 renderStages('all');
 renderGC();
 renderTeams();
+updateAsOfLabels();
 
 async function checkWikipediaUpdates(manual){
   const banner = document.getElementById('live-banner-text');
@@ -1051,6 +1092,7 @@ async function checkWikipediaUpdates(manual){
     TODAY_STAGE = computeTodayStage();
     const activeFilterBtn = document.querySelector('.filter-btn[data-filter].active');
     renderStages(activeFilterBtn ? activeFilterBtn.dataset.filter : 'all');
+    updateAsOfLabels();
 
     if(banner){
       banner.textContent = updatedCount > 0
