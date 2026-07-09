@@ -410,7 +410,7 @@
 
   <div class="live-banner" id="live-banner">
     <span class="live-dot"></span>
-    <span id="live-banner-text">Stage 5 (Lannemezan → Pau) is next. Checking Wikipedia for the latest results…</span>
+    <span id="live-banner-text">Stage 6 (Pau → Gavarnie-Gèdre) is racing today over the Tourmalet. Checking Wikipedia for the latest results…</span>
     <button id="wiki-refresh-btn" style="margin-left:auto;background:transparent;border:1px solid rgba(193,68,45,0.4);color:#e8b0a2;border-radius:999px;padding:3px 10px;font-size:11px;cursor:pointer;white-space:nowrap;">↻ Refresh</button>
   </div>
 
@@ -474,25 +474,25 @@
     <div class="class-section">
       <h2><span class="dot" style="background:var(--sprint-green)"></span>Points Classification — Green Jersey</h2>
       <p class="as-of">After Stage 3</p>
-      <div class="leader-note"><b>Mads Pedersen</b> (Lidl-Trek) took over after winning Stage 4 from the day's big breakaway, opening up a 48-point lead over the rest of the field — one of his stated goals for this Tour.</div>
+      <div class="leader-note"><b>Mads Pedersen</b> (Lidl-Trek) still leads after Stage 5, though <b>Olav Kooij</b>'s Pau stage win closed the gap — the points battle is getting tighter as more sprint stages arrive.</div>
     </div>
 
     <div class="class-section">
       <h2><span class="dot" style="background:var(--kom-red)"></span>Mountains Classification — Polka Dot Jersey</h2>
       <p class="as-of">After Stage 3</p>
-      <div class="leader-note"><b>Alex Baudin</b> (EF Education-EasyPost) continues to lead, though his margin was cut to just 2 points over <b>Alex Molenaar</b> (Caja Rural-Seguros RGA) after Stage 4's breakaway riders contested the day's four categorised climbs.</div>
+      <div class="leader-note"><b>Alex Baudin</b> (EF Education-EasyPost) still leads through Stage 5's flat run to Pau, which offered no mountain points. His margin over <b>Alex Molenaar</b> (Caja Rural-Seguros RGA) stands at 2 points heading into Stage 6's Tourmalet test.</div>
     </div>
 
     <div class="class-section">
       <h2><span class="dot" style="background:var(--white-jersey)"></span>Best Young Rider — White Jersey</h2>
       <p class="as-of">After Stage 3</p>
-      <div class="leader-note"><b>Mathias Vacek</b> (Lidl-Trek, 3rd overall) takes over after Stage 4's big breakaway shuffled the young-rider order, leading <b>Ramses Debruyne</b> (Alpecin-Premier Tech) by 4:16 and previous leader <b>Isaac Del Toro</b> (UAE Team Emirates-XRG) by 4:27.</div>
+      <div class="leader-note"><b>Mathias Vacek</b> (Lidl-Trek, 3rd overall) still leads after Stage 5's bunch sprint, which didn't disturb the GC group. He's ahead of <b>Ramses Debruyne</b> (Alpecin-Premier Tech) by 4:16 and <b>Isaac Del Toro</b> (UAE Team Emirates-XRG) by 4:27.</div>
     </div>
 
     <div class="class-section">
       <h2><span class="dot" style="background:var(--chalk-dim)"></span>Team Classification</h2>
       <p class="as-of">After Stage 3</p>
-      <div class="leader-note"><b>Lidl-Trek</b> lead in 39:04:13 after their commanding Stage 4 performance, ahead of Red Bull-Bora-hansgrohe (+19:12) and EF Education-EasyPost (+21:48).</div>
+      <div class="leader-note"><b>Lidl-Trek</b> continue to lead after Stage 5, ahead of Red Bull-Bora-hansgrohe and EF Education-EasyPost.</div>
     </div>
 
   </section>
@@ -519,8 +519,8 @@
 </main>
 
 <footer>
-  <p class="version-badge">tdf2026-tracker v1.14.0</p>
-  Route and results reflect reporting on the official 2026 Tour de France as of Stage 4 (7 July 2026). The site auto-checks Wikipedia's 2026 Tour de France article every few minutes for newer stage winners and jersey holders — see the banner at the top for the last check time. If a check fails or Wikipedia hasn't been updated yet, the last saved results stay in place.
+  <p class="version-badge">tdf2026-tracker v1.15.0</p>
+  Route and results reflect reporting on the official 2026 Tour de France as of Stage 5 (8 July 2026), with Stage 6 racing today over the Tourmalet. The site auto-checks Wikipedia's 2026 Tour de France article every few minutes for newer stage winners and jersey holders — see the banner at the top for the last check time. If a check fails or Wikipedia hasn't been updated yet, the last saved results stay in place.
 </footer>
 
 <script>
@@ -577,8 +577,18 @@ const stages = [
     ],
     jerseys:{yellow:"Torstein Træen", green:"Mads Pedersen", polka:"Alex Baudin", white:"Mathias Vacek"}
   },
-  {n:5, date:"Wed 8 Jul", from:"Lannemezan", to:"Pau", km:158.3, type:"flat", start:"13:05",
-    note:"A largely flat run into Pau, one of the Tour's most storied stage towns since 1930. Last clean chance for the fast men before the high Pyrenees."},
+  {n:5, date:"Wed 8 Jul", from:"Lannemezan", to:"Pau", km:158.3, type:"flat", start:"13:05", status:"done",
+    note:"A largely flat run into Pau, one of the Tour's most storied stage towns since 1930. The Tour's first true bunch sprint, thrown into chaos by a crash inside the final 5km that split the peloton and wrecked several lead-out trains.",
+    winner:"Olav Kooij (Decathlon CMA CGM)",
+    results:[
+      ["1","Olav Kooij","—"],
+      ["2","Max Kanter","s.t."],
+      ["3","Tim Merlier","s.t."],
+      ["4","Huub Artz","s.t."],
+      ["5","Jasper Philipsen","s.t."],
+    ],
+    jerseys:{yellow:"Torstein Træen", green:"Mads Pedersen", polka:"Alex Baudin", white:"Mathias Vacek"}
+  },
   {n:6, date:"Thu 9 Jul", from:"Pau", to:"Gavarnie-Gèdre", km:186.2, type:"mountain", start:"12:15",
     note:"The first real verdict of the race: Col d'Aspin then the Col du Tourmalet, the most-used high mountain pass in Tour history, before a new summit finish at the gates of the Cirque de Gavarnie."},
   {n:7, date:"Fri 10 Jul", from:"Hagetmau", to:"Bordeaux", km:175.1, type:"flat", start:"13:05",
@@ -754,7 +764,7 @@ const typeMeta = {
   mountain: {label:"Mountain", tag:"tag-mountain"},
 };
 
-const APP_VERSION = "1.14.0";
+const APP_VERSION = "1.15.0";
 
 // Approximate town-centre coordinates for the map view (schematic, not official race GPX)
 const townCoords = {
