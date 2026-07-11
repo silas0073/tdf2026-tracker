@@ -503,7 +503,11 @@
     <div class="class-section">
       <h2><span class="dot" style="background:var(--chalk-dim)"></span>Team Classification</h2>
       <p class="as-of">After Stage 7</p>
-      <div class="leader-note"><b>Lidl-Trek</b> continue to lead after Stage 7, roughly 27 minutes ahead of Red Bull-Bora-hansgrohe and UAE Team Emirates-XRG.</div>
+      <table class="gc">
+        <thead><tr><th class="pos">Pos</th><th>Team</th><th class="gap">Gap</th></tr></thead>
+        <tbody id="team-class-body"></tbody>
+      </table>
+      <div class="leader-note" style="margin-top:12px;"><b>Lidl-Trek</b> continue to lead after Stage 7, roughly 27 minutes ahead of Red Bull-Bora-hansgrohe and UAE Team Emirates-XRG. Full standings beyond 3rd weren't reliably available at time of writing.</div>
     </div>
 
   </section>
@@ -530,7 +534,7 @@
 </main>
 
 <footer>
-  <p class="version-badge">tdf2026-tracker v1.18.0</p>
+  <p class="version-badge">tdf2026-tracker v1.19.0</p>
   Route and results reflect reporting on the official 2026 Tour de France as of Stage 7 (10 July 2026), with Stage 8 racing today. The site auto-checks Wikipedia's 2026 Tour de France article every few minutes for newer stage winners and jersey holders — see the banner at the top for the last check time. If a check fails or Wikipedia hasn't been updated yet, the last saved results stay in place.
 </footer>
 
@@ -752,6 +756,12 @@ const whiteStandings = [
   {pos:6, name:"Davide Piganzoli", team:"Visma-Lease a Bike", gap:"+7:19"},
   {pos:7, name:"Lennert Van Eetvelt", team:"Lotto Intermarché", gap:"+7:24"},
   {pos:8, name:"Ramses Debruyne", team:"Alpecin-Premier Tech", gap:"+7:59"},
+];
+
+const teamStandings = [
+  {pos:1, name:"Lidl-Trek", team:"—", gap:"74:38:20", leader:true},
+  {pos:2, name:"Red Bull-Bora-Hansgrohe", team:"—", gap:"+27:01"},
+  {pos:3, name:"UAE Team Emirates-XRG", team:"—", gap:"+27:08"},
 ];
 
 const teams = [
@@ -983,11 +993,24 @@ function renderStandingsTable(data, bodyId){
   `).join('');
 }
 
+function renderTeamStandings(data, bodyId){
+  const body = document.getElementById(bodyId);
+  if(!body) return;
+  body.innerHTML = data.map(r => `
+    <tr class="${r.leader ? 'leader' : ''}">
+      <td class="pos">${r.pos}</td>
+      <td>${r.name}</td>
+      <td class="gap">${r.gap}</td>
+    </tr>
+  `).join('');
+}
+
 function renderGC(){
   renderStandingsTable(gcStandings, 'gc-body');
   renderStandingsTable(greenStandings, 'green-body');
   renderStandingsTable(polkaStandings, 'polka-body');
   renderStandingsTable(whiteStandings, 'white-body');
+  renderTeamStandings(teamStandings, 'team-class-body');
 }
 
 const catLabel = { wt:"WorldTour", pro:"ProTeam invite", wc:"Wildcard" };
