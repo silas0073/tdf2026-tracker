@@ -477,7 +477,7 @@
         <thead><tr><th class="pos">Pos</th><th>Rider</th><th>Team</th><th class="gap">Points</th></tr></thead>
         <tbody id="green-body"></tbody>
       </table>
-      <div class="leader-note" style="margin-top:12px;"><b>Mads Pedersen</b> (Lidl-Trek) holds a commanding lead after Stage 7, with stage winner <b>Tim Merlier</b> (Soudal Quick-Step) climbing to 4th.</div>
+      <div class="leader-note" style="margin-top:12px;"><b>Mads Pedersen</b> (Lidl-Trek) holds a commanding lead after Stage 7. Notably, <b>Tadej Pogačar</b> sits 6th purely on stage-win and intermediate-sprint points despite being a GC rider, not a sprinter.</div>
     </div>
 
     <div class="class-section">
@@ -530,7 +530,7 @@
 </main>
 
 <footer>
-  <p class="version-badge">tdf2026-tracker v1.17.0</p>
+  <p class="version-badge">tdf2026-tracker v1.18.0</p>
   Route and results reflect reporting on the official 2026 Tour de France as of Stage 7 (10 July 2026), with Stage 8 racing today. The site auto-checks Wikipedia's 2026 Tour de France article every few minutes for newer stage winners and jersey holders — see the banner at the top for the last check time. If a check fails or Wikipedia hasn't been updated yet, the last saved results stay in place.
 </footer>
 
@@ -713,6 +713,8 @@ const gcStandings = [
   {pos:6, name:"Paul Seixas", team:"Decathlon CMA CGM", gap:"+3:55"},
   {pos:7, name:"Florian Lipowitz", team:"Red Bull-Bora-Hansgrohe", gap:"+4:00"},
   {pos:8, name:"Lenny Martinez", team:"Bahrain-Victorious", gap:"+4:21"},
+  {pos:9, name:"Mattias Skjelmose", team:"Lidl-Trek", gap:"+4:57"},
+  {pos:10, name:"Mathias Vacek", team:"Lidl-Trek", gap:"+7:10"},
 ];
 
 const greenStandings = [
@@ -721,6 +723,11 @@ const greenStandings = [
   {pos:3, name:"Max Kanter", team:"XDS Astana Team", gap:"140 pts"},
   {pos:4, name:"Tim Merlier", team:"Soudal Quick-Step", gap:"134 pts"},
   {pos:5, name:"Jasper Philipsen", team:"Alpecin-Premier Tech", gap:"126 pts"},
+  {pos:6, name:"Tadej Pogačar", team:"UAE Team Emirates-XRG", gap:"75 pts"},
+  {pos:7, name:"Søren Wærenskjold", team:"Uno-X Mobility", gap:"73 pts"},
+  {pos:8, name:"Olav Kooij", team:"Decathlon CMA CGM", gap:"70 pts"},
+  {pos:9, name:"Anthony Turgis", team:"TotalEnergies", gap:"64 pts"},
+  {pos:10, name:"Jonas Vingegaard", team:"Visma-Lease a Bike", gap:"61 pts"},
 ];
 
 const polkaStandings = [
@@ -729,6 +736,11 @@ const polkaStandings = [
   {pos:3, name:"Lenny Martinez", team:"Bahrain-Victorious", gap:"16 pts"},
   {pos:4, name:"Alex Baudin", team:"EF Education-EasyPost", gap:"13 pts"},
   {pos:5, name:"Paul Seixas", team:"Decathlon CMA CGM", gap:"12 pts"},
+  {pos:6, name:"Valentin Paret-Peintre", team:"Soudal Quick-Step", gap:"10 pts"},
+  {pos:7, name:"Isaac Del Toro", team:"UAE Team Emirates-XRG", gap:"10 pts"},
+  {pos:8, name:"Florian Lipowitz", team:"Red Bull-Bora-Hansgrohe", gap:"10 pts"},
+  {pos:9, name:"Nicolas Prodhomme", team:"Decathlon CMA CGM", gap:"9 pts"},
+  {pos:10, name:"Raúl García Pierna", team:"Movistar Team", gap:"7 pts"},
 ];
 
 const whiteStandings = [
@@ -737,6 +749,9 @@ const whiteStandings = [
   {pos:3, name:"Paul Seixas", team:"Decathlon CMA CGM", gap:"+0:28"},
   {pos:4, name:"Lenny Martinez", team:"Bahrain-Victorious", gap:"+0:54"},
   {pos:5, name:"Mathias Vacek", team:"Lidl-Trek", gap:"+3:43"},
+  {pos:6, name:"Davide Piganzoli", team:"Visma-Lease a Bike", gap:"+7:19"},
+  {pos:7, name:"Lennert Van Eetvelt", team:"Lotto Intermarché", gap:"+7:24"},
+  {pos:8, name:"Ramses Debruyne", team:"Alpecin-Premier Tech", gap:"+7:59"},
 ];
 
 const teams = [
