@@ -396,7 +396,6 @@
   @media (max-width: 560px){
     .stage-head{ grid-template-columns: 40px 1fr auto; }
     .stage-dist{ display: none; }
-    table.gc .gap{ display: none; }
   }
   @media (prefers-reduced-motion: reduce){ .stage-body{ transition: none; } .live-dot{ animation: none; } }
 </style>
@@ -474,19 +473,31 @@
     <div class="class-section">
       <h2><span class="dot" style="background:var(--sprint-green)"></span>Points Classification — Green Jersey</h2>
       <p class="as-of">After Stage 7</p>
-      <div class="leader-note"><b>Mads Pedersen</b> (Lidl-Trek) holds a commanding lead on 204 points after Stage 7, ahead of <b>Biniam Girmay</b> (NSN Cycling, 145) and <b>Max Kanter</b> (XDS Astana, 140), with stage winner <b>Tim Merlier</b> (Soudal Quick-Step) up to 134.</div>
+      <table class="gc">
+        <thead><tr><th class="pos">Pos</th><th>Rider</th><th>Team</th><th class="gap">Points</th></tr></thead>
+        <tbody id="green-body"></tbody>
+      </table>
+      <div class="leader-note" style="margin-top:12px;"><b>Mads Pedersen</b> (Lidl-Trek) holds a commanding lead after Stage 7, with stage winner <b>Tim Merlier</b> (Soudal Quick-Step) climbing to 4th.</div>
     </div>
 
     <div class="class-section">
       <h2><span class="dot" style="background:var(--kom-red)"></span>Mountains Classification — Polka Dot Jersey</h2>
       <p class="as-of">After Stage 7</p>
-      <div class="leader-note"><b>Tadej Pogačar</b> (UAE Team Emirates-XRG) took over the mountains lead with a maximum haul over the Tourmalet on Stage 6, but wears yellow instead — so the polka dot jersey passes to the next-placed rider, <b>Jonas Vingegaard</b> (Visma-Lease a Bike).</div>
+      <table class="gc">
+        <thead><tr><th class="pos">Pos</th><th>Rider</th><th>Team</th><th class="gap">Points</th></tr></thead>
+        <tbody id="polka-body"></tbody>
+      </table>
+      <div class="leader-note" style="margin-top:12px;"><b>Tadej Pogačar</b> (UAE Team Emirates-XRG) took over the mountains lead with a maximum haul over the Tourmalet on Stage 6, but wears yellow instead — so the polka dot jersey passes to the next-placed rider, <b>Jonas Vingegaard</b> (Visma-Lease a Bike).</div>
     </div>
 
     <div class="class-section">
       <h2><span class="dot" style="background:var(--white-jersey)"></span>Best Young Rider — White Jersey</h2>
       <p class="as-of">After Stage 7</p>
-      <div class="leader-note"><b>Isaac Del Toro</b> (UAE Team Emirates-XRG, 3rd overall) took the white jersey on Stage 6's Tourmalet showdown and holds it after Stage 7's sprint stage, which didn't disturb the GC group.</div>
+      <table class="gc">
+        <thead><tr><th class="pos">Pos</th><th>Rider</th><th>Team</th><th class="gap">Gap</th></tr></thead>
+        <tbody id="white-body"></tbody>
+      </table>
+      <div class="leader-note" style="margin-top:12px;"><b>Isaac Del Toro</b> (UAE Team Emirates-XRG, 3rd overall) took the white jersey on Stage 6's Tourmalet showdown and holds it after Stage 7's sprint stage, just 7 seconds ahead of Juan Ayuso.</div>
     </div>
 
     <div class="class-section">
@@ -519,7 +530,7 @@
 </main>
 
 <footer>
-  <p class="version-badge">tdf2026-tracker v1.16.0</p>
+  <p class="version-badge">tdf2026-tracker v1.17.0</p>
   Route and results reflect reporting on the official 2026 Tour de France as of Stage 7 (10 July 2026), with Stage 8 racing today. The site auto-checks Wikipedia's 2026 Tour de France article every few minutes for newer stage winners and jersey holders — see the banner at the top for the last check time. If a check fails or Wikipedia hasn't been updated yet, the last saved results stay in place.
 </footer>
 
@@ -702,6 +713,30 @@ const gcStandings = [
   {pos:6, name:"Paul Seixas", team:"Decathlon CMA CGM", gap:"+3:55"},
   {pos:7, name:"Florian Lipowitz", team:"Red Bull-Bora-Hansgrohe", gap:"+4:00"},
   {pos:8, name:"Lenny Martinez", team:"Bahrain-Victorious", gap:"+4:21"},
+];
+
+const greenStandings = [
+  {pos:1, name:"Mads Pedersen", team:"Lidl-Trek", gap:"204 pts", leader:true},
+  {pos:2, name:"Biniam Girmay", team:"NSN Cycling Team", gap:"145 pts"},
+  {pos:3, name:"Max Kanter", team:"XDS Astana Team", gap:"140 pts"},
+  {pos:4, name:"Tim Merlier", team:"Soudal Quick-Step", gap:"134 pts"},
+  {pos:5, name:"Jasper Philipsen", team:"Alpecin-Premier Tech", gap:"126 pts"},
+];
+
+const polkaStandings = [
+  {pos:1, name:"Tadej Pogačar", team:"UAE Team Emirates-XRG", gap:"28 pts", leader:true},
+  {pos:2, name:"Jonas Vingegaard", team:"Visma-Lease a Bike", gap:"19 pts"},
+  {pos:3, name:"Lenny Martinez", team:"Bahrain-Victorious", gap:"16 pts"},
+  {pos:4, name:"Alex Baudin", team:"EF Education-EasyPost", gap:"13 pts"},
+  {pos:5, name:"Paul Seixas", team:"Decathlon CMA CGM", gap:"12 pts"},
+];
+
+const whiteStandings = [
+  {pos:1, name:"Isaac Del Toro", team:"UAE Team Emirates-XRG", gap:"24:59:44", leader:true},
+  {pos:2, name:"Juan Ayuso", team:"Lidl-Trek", gap:"+0:07"},
+  {pos:3, name:"Paul Seixas", team:"Decathlon CMA CGM", gap:"+0:28"},
+  {pos:4, name:"Lenny Martinez", team:"Bahrain-Victorious", gap:"+0:54"},
+  {pos:5, name:"Mathias Vacek", team:"Lidl-Trek", gap:"+3:43"},
 ];
 
 const teams = [
@@ -920,16 +955,24 @@ function renderStages(filter){
   });
 }
 
-function renderGC(){
-  const body = document.getElementById('gc-body');
-  body.innerHTML = gcStandings.map(r => `
+function renderStandingsTable(data, bodyId){
+  const body = document.getElementById(bodyId);
+  if(!body) return;
+  body.innerHTML = data.map(r => `
     <tr class="${r.leader ? 'leader' : ''}">
       <td class="pos">${r.pos}</td>
       <td>${r.name}</td>
       <td>${r.team}</td>
-      <td class="gap">${r.leader ? r.gap : r.gap}</td>
+      <td class="gap">${r.gap}</td>
     </tr>
   `).join('');
+}
+
+function renderGC(){
+  renderStandingsTable(gcStandings, 'gc-body');
+  renderStandingsTable(greenStandings, 'green-body');
+  renderStandingsTable(polkaStandings, 'polka-body');
+  renderStandingsTable(whiteStandings, 'white-body');
 }
 
 const catLabel = { wt:"WorldTour", pro:"ProTeam invite", wc:"Wildcard" };
