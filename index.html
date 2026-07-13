@@ -534,8 +534,8 @@
 </main>
 
 <footer>
-  <p class="version-badge">tdf2026-tracker v1.20.0</p>
-  Route and results reflect reporting on the official 2026 Tour de France as of Stage 7 (10 July 2026), with Stage 8 racing today. The site auto-checks Wikipedia's 2026 Tour de France article every few minutes for newer stage winners and jersey holders — see the banner at the top for the last check time. If a check fails or Wikipedia hasn't been updated yet, the last saved results stay in place.
+  <p class="version-badge">tdf2026-tracker v1.21.0</p>
+  Route and results reflect reporting on the official 2026 Tour de France as of Stage 9 (12 July 2026), with the race on its first rest day. The site auto-checks Wikipedia's 2026 Tour de France article every few minutes for newer stage winners and jersey holders — see the banner at the top for the last check time. If a check fails or Wikipedia hasn't been updated yet, the last saved results stay in place.
 </footer>
 
 <script>
@@ -663,10 +663,40 @@ const stages = [
     ],
     jerseys:{yellow:"Tadej Pogačar", green:"Mads Pedersen", polka:"Jonas Vingegaard", white:"Isaac del Toro"}
   },
-  {n:8, date:"Sat 11 Jul", from:"Périgueux", to:"Bergerac", km:180.4, type:"flat", start:"13:05",
-    note:"Another day built for the fast men, riding through the Dordogne wine country between two regional capitals."},
-  {n:9, date:"Sun 12 Jul", from:"Malemort", to:"Ussel", km:185.5, type:"hilly", start:"13:05",
-    note:"A transitional stage through the Corrèze ahead of the first rest day — a good day for a breakaway if the GC teams sit up."},
+  {n:8, date:"Sat 11 Jul", from:"Périgueux", to:"Bergerac", km:180.4, type:"flat", start:"13:05", status:"done",
+    note:"Another day built for the fast men through the Dordogne wine country. Breakaway rider Liam Slock (Lotto Intermarché) resisted almost the whole way, caught only 1.3km from the line. Tim Merlier came from well back in the sprint to take his second straight win, edging Biniam Girmay and Olav Kooij.",
+    winner:"Tim Merlier (Soudal Quick-Step)",
+    results:[
+      ["1","Tim Merlier","3:52:50"],
+      ["2","Biniam Girmay","s.t."],
+      ["3","Olav Kooij","s.t."],
+      ["4","Jasper Philipsen","s.t."],
+      ["5","Pavel Bittner","s.t."],
+      ["6","Rick Pluimers","s.t."],
+      ["7","Pascal Ackermann","s.t."],
+      ["8","Clément Russo","s.t."],
+      ["9","Max Kanter","s.t."],
+      ["10","Milan Fretin","s.t."],
+    ],
+    jerseys:{yellow:"Tadej Pogačar", green:"Mads Pedersen", polka:"Tadej Pogačar", white:"Isaac del Toro"}
+  },
+  {n:9, date:"Sun 12 Jul", from:"Malemort", to:"Ussel", km:154.6, type:"hilly", start:"13:35", status:"done",
+    note:"Shortened from 185.5km to 154.6km due to an extreme-heat red alert in the Corrèze. A big breakaway whittled down to a final four on the last classified climb — Mathieu van der Poel led out the sprint from the front the whole final kilometre and held on, beating Tobias Halland Johannessen, Tom Pidcock (who fought back from a mechanical), and Alex Baudin. The reduced peloton, led home by Filippo Ganna, finished just 6 seconds back. No change to the GC.",
+    winner:"Mathieu van der Poel (Alpecin-Premier Tech)",
+    results:[
+      ["1","Mathieu van der Poel","3:27:51"],
+      ["2","Tobias Halland Johannessen","s.t."],
+      ["3","Tom Pidcock","s.t."],
+      ["4","Alex Baudin","s.t."],
+      ["5","Filippo Ganna","+0:06"],
+      ["6","Mads Pedersen","s.t."],
+      ["7","Michael Matthews","s.t."],
+      ["8","Nicolas Breuillard","s.t."],
+      ["9","Jordan Jegat","s.t."],
+      ["10","Sean Quinn","s.t."],
+    ],
+    jerseys:{yellow:"Tadej Pogačar", green:"Mads Pedersen", polka:"Tadej Pogačar", white:"Isaac del Toro"}
+  },
   {n:"R1", rest:true, date:"Mon 13 Jul", note:"First rest day."},
   {n:10, date:"Tue 14 Jul", from:"Aurillac", to:"Le Lioran", km:166.6, type:"mountain", start:"12:15",
     note:"The race enters the Massif Central, a range of old volcanic climbs that rarely make headlines but regularly cause damage — a genuine wildcard mountain stage."},
