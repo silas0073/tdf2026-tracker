@@ -409,7 +409,7 @@
 
   <div class="live-banner" id="live-banner">
     <span class="live-dot"></span>
-    <span id="live-banner-text">Stage 8 (Périgueux → Bergerac) is racing today. Checking Wikipedia for the latest results…</span>
+    <span id="live-banner-text">Second rest day (Haute-Savoie) — Stage 16 ITT (Évian-les-Bains → Thonon-les-Bains) is next, Tue 21 Jul. Checking Wikipedia for the latest results…</span>
     <button id="wiki-refresh-btn" style="margin-left:auto;background:transparent;border:1px solid rgba(193,68,45,0.4);color:#e8b0a2;border-radius:999px;padding:3px 10px;font-size:11px;cursor:pointer;white-space:nowrap;">↻ Refresh</button>
   </div>
 
@@ -426,8 +426,8 @@
     </div>
     <div class="jersey-card polka">
       <div class="jersey-label">Polka Dot · Mountains</div>
-      <div class="jersey-name" id="jersey-polka-name">Jonas Vingegaard</div>
-      <div class="jersey-team" id="jersey-polka-team">Visma-Lease a Bike</div>
+      <div class="jersey-name" id="jersey-polka-name">Tadej Pogačar</div>
+      <div class="jersey-team" id="jersey-polka-team">UAE Team Emirates-XRG</div>
     </div>
     <div class="jersey-card white">
       <div class="jersey-label">White · Best Young Rider</div>
@@ -534,7 +534,7 @@
 </main>
 
 <footer>
-  <p class="version-badge">tdf2026-tracker v1.21.0</p>
+  <p class="version-badge">tdf2026-tracker v1.22.0</p>
   Route and results reflect reporting on the official 2026 Tour de France as of Stage 9 (12 July 2026), with the race on its first rest day. The site auto-checks Wikipedia's 2026 Tour de France article every few minutes for newer stage winners and jersey holders — see the banner at the top for the last check time. If a check fails or Wikipedia hasn't been updated yet, the last saved results stay in place.
 </footer>
 
@@ -698,18 +698,108 @@ const stages = [
     jerseys:{yellow:"Tadej Pogačar", green:"Mads Pedersen", polka:"Tadej Pogačar", white:"Isaac del Toro"}
   },
   {n:"R1", rest:true, date:"Mon 13 Jul", note:"First rest day."},
-  {n:10, date:"Tue 14 Jul", from:"Aurillac", to:"Le Lioran", km:166.6, type:"mountain", start:"12:15",
-    note:"The race enters the Massif Central, a range of old volcanic climbs that rarely make headlines but regularly cause damage — a genuine wildcard mountain stage."},
-  {n:11, date:"Wed 15 Jul", from:"Vichy", to:"Nevers", km:161.3, type:"flat", start:"13:05",
-    note:"A flat transition stage through central France, likely to end in a bunch sprint."},
-  {n:12, date:"Thu 16 Jul", from:"Nevers Magny-Cours", to:"Chalon-sur-Saône", km:179.1, type:"flat", start:"13:05",
-    note:"Starting from the Circuit de Nevers Magny-Cours motor-racing venue, another day set up for the sprint teams."},
-  {n:13, date:"Fri 17 Jul", from:"Dole", to:"Belfort", km:205.8, type:"hilly", start:"13:05",
-    note:"The longest stage of the race, through the rolling Jura hills. No classified summit, but 206km of cumulative fatigue can make or break a breakaway."},
-  {n:14, date:"Sat 18 Jul", from:"Mulhouse", to:"Le Markstein", km:155.3, type:"mountain", start:"12:15",
-    note:"An underrated Vosges stage that climbs early and often — one of the most demanding days of the race relative to its modest distance."},
-  {n:15, date:"Sun 19 Jul", from:"Champagnole", to:"Plateau de Solaison", km:183.9, type:"mountain", start:"12:15",
-    note:"A brand-new summit finish never before used by the Tour, at 1,471m in the Haute-Savoie. Falls right before the second rest day, so time lost here can't be recovered quickly."},
+  {n:10, date:"Tue 14 Jul", from:"Aurillac", to:"Le Lioran", km:166.6, type:"mountain", start:"12:15", status:"done",
+    note:"The race enters the Massif Central, a range of old volcanic climbs that rarely make headlines but regularly cause damage. Pogačar attacked alone late on and soloed in for a comfortable win, gaining time on every GC rival.",
+    winner:"Tadej Pogačar (UAE Team Emirates-XRG)",
+    results:[
+      ["1","Tadej Pogačar","3:58:08"],
+      ["2","Remco Evenepoel","+0:32"],
+      ["3","Paul Seixas","+0:34"],
+      ["4","Florian Lipowitz","s.t."],
+      ["5","Juan Ayuso","+0:38"],
+      ["6","Mattias Skjelmose","s.t."],
+      ["7","Jonas Vingegaard","+0:44"],
+      ["8","Isaac del Toro","+1:31"],
+      ["9","Lenny Martinez","+1:59"],
+      ["10","Tom Pidcock","+2:03"],
+    ],
+    jerseys:{yellow:"Tadej Pogačar", green:"Mads Pedersen", polka:"Tadej Pogačar", white:"Juan Ayuso"}
+  },
+  {n:11, date:"Wed 15 Jul", from:"Vichy", to:"Nevers", km:161.3, type:"flat", start:"13:05", status:"done",
+    note:"A flat transition stage through central France that turned into the fastest road stage in Tour history — average speed 50.9km/h. A late breakaway (Charmig, Le Berre, Oliveira) was caught with 6km left; Søren Wærenskjold launched an audacious long sprint and simply refused to be caught, going from last-to-first a day after finishing at the back in Le Lioran.",
+    winner:"Søren Wærenskjold (Uno-X Mobility)",
+    results:[
+      ["1","Søren Wærenskjold","3:10:06"],
+      ["2","Olav Kooij","s.t."],
+      ["3","Jasper Philipsen","s.t."],
+      ["4","Milan Fretin","s.t."],
+      ["5","Huub Artz","s.t."],
+      ["6","Biniam Girmay","s.t."],
+      ["7","Anthony Turgis","s.t."],
+      ["8","Fernando Gaviria","s.t."],
+      ["9","Clément Russo","s.t."],
+      ["10","Pascal Ackermann","s.t."],
+    ],
+    jerseys:{yellow:"Tadej Pogačar", green:"Mads Pedersen", polka:"Tadej Pogačar", white:"Juan Ayuso"}
+  },
+  {n:12, date:"Thu 16 Jul", from:"Nevers Magny-Cours", to:"Chalon-sur-Saône", km:179.1, type:"flat", start:"13:05", status:"done",
+    note:"Starting from the Circuit de Nevers Magny-Cours motor-racing venue, another day for the sprint teams — the last pure bunch sprint before the Vosges. Lidl-Trek tried repeatedly to break the peloton up in the closing 40km without success. A crash involving Fernando Gaviria and Søren Wærenskjold split the field with under 500m to go; Tim Merlier avoided the chaos to win his third stage of this Tour.",
+    winner:"Tim Merlier (Soudal Quick-Step)",
+    results:[
+      ["1","Tim Merlier","3:38:53"],
+      ["2","Olav Kooij","s.t."],
+      ["3","Jasper Philipsen","s.t."],
+      ["4","Biniam Girmay","s.t."],
+      ["5","Milan Fretin","s.t."],
+      ["6","Max Kanter","s.t."],
+      ["7","Anthony Turgis","s.t."],
+      ["8","Pascal Ackermann","s.t."],
+      ["9","Mads Pedersen","s.t."],
+      ["10","Pavel Bittner","s.t."],
+    ],
+    jerseys:{yellow:"Tadej Pogačar", green:"Mads Pedersen", polka:"Tadej Pogačar", white:"Juan Ayuso"}
+  },
+  {n:13, date:"Fri 17 Jul", from:"Dole", to:"Belfort", km:205.8, type:"hilly", start:"13:05", status:"done",
+    note:"The longest stage of the race, run off at a record-breaking 51.45km/h average. A huge ~57-rider move went clear and stayed away over the Col des Croix and the Ballon d'Alsace; Mauro Schmid and Harold Tejada broke clear on the descent and Schmid out-sprinted him for his maiden Tour stage win. Tom Pidcock rode superbly to take 3rd and jumped to 4th overall.",
+    winner:"Mauro Schmid (Team Jayco AlUla)",
+    results:[
+      ["1","Mauro Schmid","4:00:04"],
+      ["2","Harold Tejada","s.t."],
+      ["3","Tom Pidcock","+0:02"],
+      ["4","Maxim Van Gils","s.t."],
+      ["5","Brandon McNulty","s.t."],
+      ["6","Tim Wellens","s.t."],
+      ["7","Kévin Vauquelin","s.t."],
+      ["8","Jordan Jegat","s.t."],
+      ["9","Clément Braz Afonso","s.t."],
+      ["10","Luke Plapp","s.t."],
+    ],
+    jerseys:{yellow:"Tadej Pogačar", green:"Mads Pedersen", polka:"Tadej Pogačar", white:"Juan Ayuso"}
+  },
+  {n:14, date:"Sat 18 Jul", from:"Mulhouse", to:"Le Markstein", km:155.3, type:"mountain", start:"12:15", status:"done",
+    note:"An underrated Vosges stage — Grand Ballon, Col du Page, Ballon d'Alsace and the decisive Col du Haag packed into just 155km. Pogačar attacked 1.5km from the top of the Col du Haag and descended alone to Le Markstein for his 4th stage win of this Tour and 25th of his career. Del Toro won the chase group sprint for 2nd; Vingegaard limited his losses in 4th. Seixas took over the white jersey.",
+    winner:"Tadej Pogačar (UAE Team Emirates-XRG)",
+    results:[
+      ["1","Tadej Pogačar","4:00:12"],
+      ["2","Isaac del Toro","+0:38"],
+      ["3","Paul Seixas","s.t."],
+      ["4","Jonas Vingegaard","+0:42"],
+      ["5","Remco Evenepoel","+0:45"],
+      ["6","Florian Lipowitz","s.t."],
+      ["7","Juan Ayuso","s.t."],
+      ["8","Mattias Skjelmose","s.t."],
+      ["9","Richard Carapaz","+1:10"],
+      ["10","Valentin Paret-Peintre","+1:15"],
+    ],
+    jerseys:{yellow:"Tadej Pogačar", green:"Mads Pedersen", polka:"Tadej Pogačar", white:"Paul Seixas"}
+  },
+  {n:15, date:"Sun 19 Jul", from:"Champagnole", to:"Plateau de Solaison", km:183.9, type:"mountain", start:"12:15", status:"done",
+    note:"A brand-new summit finish never before used by the Tour, at 1,471m in the Haute-Savoie. Overshadowed by tragedy: Jonas Vingegaard crashed hard on a roundabout around 19-20km from the finish, fracturing his collarbone, and abandoned the Tour — surgery has since been recommended. Up front, Evenepoel out-climbed Pogačar and Del Toro to win in the final metres for his first Tour road-stage victory, moving to 2nd overall. Del Toro leapt to 3rd overall and took the white jersey.",
+    winner:"Remco Evenepoel (Red Bull-Bora-Hansgrohe)",
+    results:[
+      ["1","Remco Evenepoel","4:31:52"],
+      ["2","Tadej Pogačar","s.t."],
+      ["3","Isaac del Toro","+0:06"],
+      ["4","Florian Lipowitz","+1:10"],
+      ["5","Paul Seixas","s.t."],
+      ["6","Juan Ayuso","s.t."],
+      ["7","Mattias Skjelmose","+2:30"],
+      ["8","Lenny Martinez","s.t."],
+      ["9","Tom Pidcock","+3:10"],
+      ["10","Richard Carapaz","+3:45"],
+    ],
+    jerseys:{yellow:"Tadej Pogačar", green:"Mads Pedersen", polka:"Tadej Pogačar", white:"Isaac del Toro"}
+  },
   {n:"R2", rest:true, date:"Mon 20 Jul", note:"Second rest day."},
   {n:16, date:"Tue 21 Jul", from:"Évian-les-Bains", to:"Thonon-les-Bains", km:26.1, type:"tt", start:"12:30", startNote:"first rider off; GC contenders roll ~17:00 CEST",
     note:"The second and final individual time trial, on the shores of Lake Geneva, opening with the Côte de Larringes — enough of a climb to favour all-rounders over pure specialists."},
@@ -774,59 +864,59 @@ function updateAsOfLabels(){
 }
 
 const gcStandings = [
-  {pos:1, name:"Tadej Pogačar", team:"UAE Team Emirates-XRG", gap:"24:56:17", leader:true},
-  {pos:2, name:"Jonas Vingegaard", team:"Visma-Lease a Bike", gap:"+2:42"},
-  {pos:3, name:"Isaac Del Toro", team:"UAE Team Emirates-XRG", gap:"+3:27"},
-  {pos:4, name:"Remco Evenepoel", team:"Red Bull-Bora-Hansgrohe", gap:"+3:30"},
-  {pos:5, name:"Juan Ayuso", team:"Lidl-Trek", gap:"+3:34"},
-  {pos:6, name:"Paul Seixas", team:"Decathlon CMA CGM", gap:"+3:55"},
-  {pos:7, name:"Florian Lipowitz", team:"Red Bull-Bora-Hansgrohe", gap:"+4:00"},
-  {pos:8, name:"Lenny Martinez", team:"Bahrain-Victorious", gap:"+4:21"},
-  {pos:9, name:"Mattias Skjelmose", team:"Lidl-Trek", gap:"+4:57"},
-  {pos:10, name:"Mathias Vacek", team:"Lidl-Trek", gap:"+7:10"},
+  {pos:1, name:"Tadej Pogačar", team:"UAE Team Emirates-XRG", gap:"55:41:31", leader:true},
+  {pos:2, name:"Remco Evenepoel", team:"Red Bull-Bora-Hansgrohe", gap:"+5:00"},
+  {pos:3, name:"Isaac Del Toro", team:"UAE Team Emirates-XRG", gap:"+5:58"},
+  {pos:4, name:"Paul Seixas", team:"Decathlon CMA CGM", gap:"+6:23"},
+  {pos:5, name:"Florian Lipowitz", team:"Red Bull-Bora-Hansgrohe", gap:"+6:48"},
+  {pos:6, name:"Juan Ayuso", team:"Lidl-Trek", gap:"+7:28"},
+  {pos:7, name:"Mattias Skjelmose", team:"Lidl-Trek", gap:"+9:30"},
+  {pos:8, name:"Lenny Martinez", team:"Bahrain-Victorious", gap:"+10:28"},
+  {pos:9, name:"Tom Pidcock", team:"Pinarello Q36.5", gap:"+10:59"},
+  {pos:10, name:"Jordan Jegat", team:"TotalEnergies", gap:"+19:26"},
 ];
 
 const greenStandings = [
-  {pos:1, name:"Mads Pedersen", team:"Lidl-Trek", gap:"204 pts", leader:true},
-  {pos:2, name:"Biniam Girmay", team:"NSN Cycling Team", gap:"145 pts"},
-  {pos:3, name:"Max Kanter", team:"XDS Astana Team", gap:"140 pts"},
-  {pos:4, name:"Tim Merlier", team:"Soudal Quick-Step", gap:"134 pts"},
-  {pos:5, name:"Jasper Philipsen", team:"Alpecin-Premier Tech", gap:"126 pts"},
-  {pos:6, name:"Tadej Pogačar", team:"UAE Team Emirates-XRG", gap:"75 pts"},
-  {pos:7, name:"Søren Wærenskjold", team:"Uno-X Mobility", gap:"73 pts"},
-  {pos:8, name:"Olav Kooij", team:"Decathlon CMA CGM", gap:"70 pts"},
-  {pos:9, name:"Anthony Turgis", team:"TotalEnergies", gap:"64 pts"},
-  {pos:10, name:"Jonas Vingegaard", team:"Visma-Lease a Bike", gap:"61 pts"},
+  {pos:1, name:"Mads Pedersen", team:"Lidl-Trek", gap:"397 pts", leader:true},
+  {pos:2, name:"Jasper Philipsen", team:"Alpecin-Premier Tech", gap:"361 pts"},
+  {pos:3, name:"Biniam Girmay", team:"NSN Cycling Team", gap:"347 pts"},
+  {pos:4, name:"Tim Merlier", team:"Soudal Quick-Step", gap:"260 pts"},
+  {pos:5, name:"Max Kanter", team:"XDS Astana Team", gap:"225 pts"},
+  {pos:6, name:"Olav Kooij", team:"Decathlon CMA CGM", gap:"210 pts"},
+  {pos:7, name:"Søren Wærenskjold", team:"Uno-X Mobility", gap:"169 pts"},
+  {pos:8, name:"Tadej Pogačar", team:"UAE Team Emirates-XRG", gap:"110 pts"},
+  {pos:9, name:"Anthony Turgis", team:"TotalEnergies", gap:"108 pts"},
+  {pos:10, name:"Milan Fretin", team:"Cofidis", gap:"95 pts"},
 ];
 
 const polkaStandings = [
-  {pos:1, name:"Tadej Pogačar", team:"UAE Team Emirates-XRG", gap:"28 pts", leader:true},
-  {pos:2, name:"Jonas Vingegaard", team:"Visma-Lease a Bike", gap:"19 pts"},
-  {pos:3, name:"Lenny Martinez", team:"Bahrain-Victorious", gap:"16 pts"},
-  {pos:4, name:"Alex Baudin", team:"EF Education-EasyPost", gap:"13 pts"},
-  {pos:5, name:"Paul Seixas", team:"Decathlon CMA CGM", gap:"12 pts"},
-  {pos:6, name:"Valentin Paret-Peintre", team:"Soudal Quick-Step", gap:"10 pts"},
-  {pos:7, name:"Isaac Del Toro", team:"UAE Team Emirates-XRG", gap:"10 pts"},
-  {pos:8, name:"Florian Lipowitz", team:"Red Bull-Bora-Hansgrohe", gap:"10 pts"},
-  {pos:9, name:"Nicolas Prodhomme", team:"Decathlon CMA CGM", gap:"9 pts"},
-  {pos:10, name:"Raúl García Pierna", team:"Movistar Team", gap:"7 pts"},
+  {pos:1, name:"Tadej Pogačar", team:"UAE Team Emirates-XRG", gap:"56 pts", leader:true},
+  {pos:2, name:"Valentin Paret-Peintre", team:"Soudal Quick-Step", gap:"47 pts"},
+  {pos:3, name:"Lenny Martinez", team:"Bahrain-Victorious", gap:"32 pts"},
+  {pos:4, name:"Tom Pidcock", team:"Pinarello Q36.5", gap:"24 pts"},
+  {pos:5, name:"Isaac Del Toro", team:"UAE Team Emirates-XRG", gap:"22 pts"},
+  {pos:6, name:"Paul Seixas", team:"Decathlon CMA CGM", gap:"20 pts"},
+  {pos:7, name:"Alex Baudin", team:"EF Education-EasyPost", gap:"13 pts"},
+  {pos:8, name:"Florian Lipowitz", team:"Red Bull-Bora-Hansgrohe", gap:"12 pts"},
+  {pos:9, name:"Richard Carapaz", team:"EF Education-EasyPost", gap:"10 pts"},
+  {pos:10, name:"Remco Evenepoel", team:"Red Bull-Bora-Hansgrohe", gap:"10 pts"},
 ];
 
 const whiteStandings = [
-  {pos:1, name:"Isaac Del Toro", team:"UAE Team Emirates-XRG", gap:"24:59:44", leader:true},
-  {pos:2, name:"Juan Ayuso", team:"Lidl-Trek", gap:"+0:07"},
-  {pos:3, name:"Paul Seixas", team:"Decathlon CMA CGM", gap:"+0:28"},
-  {pos:4, name:"Lenny Martinez", team:"Bahrain-Victorious", gap:"+0:54"},
-  {pos:5, name:"Mathias Vacek", team:"Lidl-Trek", gap:"+3:43"},
-  {pos:6, name:"Davide Piganzoli", team:"Visma-Lease a Bike", gap:"+7:19"},
-  {pos:7, name:"Lennert Van Eetvelt", team:"Lotto Intermarché", gap:"+7:24"},
-  {pos:8, name:"Ramses Debruyne", team:"Alpecin-Premier Tech", gap:"+7:59"},
+  {pos:1, name:"Isaac Del Toro", team:"UAE Team Emirates-XRG", gap:"55:47:29", leader:true},
+  {pos:2, name:"Paul Seixas", team:"Decathlon CMA CGM", gap:"+0:25"},
+  {pos:3, name:"Juan Ayuso", team:"Lidl-Trek", gap:"+1:30"},
+  {pos:4, name:"Mathias Vacek", team:"Lidl-Trek", gap:"+9:20"},
+  {pos:5, name:"Davide Piganzoli", team:"Visma-Lease a Bike", gap:"+13:40"},
+  {pos:6, name:"Lennert Van Eetvelt", team:"Lotto Intermarché", gap:"+14:10"},
+  {pos:7, name:"Ramses Debruyne", team:"Alpecin-Premier Tech", gap:"+15:05"},
+  {pos:8, name:"Yannis Voisard", team:"Tudor Pro Cycling Team", gap:"+16:30"},
 ];
 
 const teamStandings = [
-  {pos:1, name:"Lidl-Trek", team:"—", gap:"74:38:20", leader:true},
-  {pos:2, name:"Red Bull-Bora-Hansgrohe", team:"—", gap:"+27:01"},
-  {pos:3, name:"UAE Team Emirates-XRG", team:"—", gap:"+27:08"},
+  {pos:1, name:"Lidl-Trek", team:"—", gap:"167:22:40", leader:true},
+  {pos:2, name:"UAE Team Emirates-XRG", team:"—", gap:"+3:19"},
+  {pos:3, name:"Red Bull-Bora-Hansgrohe", team:"—", gap:"+18:45"},
 ];
 
 const teams = [
